@@ -6,7 +6,7 @@
     <p class="text-sm font-medium text-indigo-600">Loading users...</p>
   } @else {
     <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-lg shadow-slate-200/60">
-      <table class="min-w-full divide-y divide-slate-200">
+      <table class="w-max min-w-full divide-y divide-slate-200 whitespace-nowrap">
         <thead class="bg-indigo-600">
           <tr>
             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">UUID</th>
@@ -19,8 +19,8 @@
         </thead>
         <tbody class="divide-y divide-slate-100">
           @for (user of users(); track user.id) {
-            <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">{{ user.id }}</td>
             <tr class="transition-colors odd:bg-white even:bg-indigo-50/40 hover:bg-indigo-50">
+              <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">{{ user.id }}</td>
               <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">
                 {{ user.first_name }} {{ user.middle_name }} {{ user.last_name  }}
               </td>
@@ -30,11 +30,29 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="2" class="px-6 py-10 text-center text-sm text-slate-500">No users found.</td>
+              <td colspan="5" class="px-6 py-10 text-center text-sm text-slate-500">No users found.</td>
             </tr>
           }
         </tbody>
       </table>
+
+      <nav aria-label="User pagination">
+        <button
+            type="button"
+            [disabled]="pageNumber() === 1"
+            (click)="changePage(pageNumber() - 1)">
+            Previous
+        </button>
+
+        <span>Page {{ pageNumber() }} of {{ totalPages() }}</span>
+
+        <button
+            type="button"
+            [disabled]="pageNumber() === totalPages()"
+            (click)="changePage(pageNumber() + 1)">
+            Next
+        </button>
+        </nav>
     </div>
   }
   </div>

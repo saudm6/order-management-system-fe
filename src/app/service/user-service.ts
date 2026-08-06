@@ -11,14 +11,15 @@ export class UserService {
   protected httpClient = inject(HttpClient);
   protected apiObpUrl = `http://localhost:5210/api/users`;
 
-  getPagedUsers() : Observable<UserPagedResult<any>> {
+  getPagedUsers(pageNumber : number, pageSize : number) : Observable<UserPagedResult<any>> {
 
-    return this.httpClient.get(`${this.apiObpUrl}?pageNumber=1&pageSize=5`).pipe(map((response: any) => {
+    return this.httpClient.get(`${this.apiObpUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`).pipe(map((response: any) => {
       const pagedResult: UserPagedResult<any> = {
         items: response.items,
         totalCount: response.totalCount,
         pageNumber: response.pageNumber,
-        pageSize: response.pageSize
+        pageSize: response.pageSize,
+        totalPages: response.totalPages
       };
       return pagedResult;
     }));

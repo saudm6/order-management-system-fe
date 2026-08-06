@@ -16,6 +16,7 @@ export class AllUsersPage implements OnInit {
   readonly pageNumber = signal(1);
   readonly pageSize = signal(5);
   readonly isLoading = signal(false);
+  readonly totalPages = signal(0);
   
   // selectedUser: UserData | null = null;
 
@@ -23,14 +24,28 @@ export class AllUsersPage implements OnInit {
     this.loadUsers();
   }
 
+
+
+  changePage(page: number): void {
+  if (page < 1 || page > this.totalCount()) {
+    return;
+  }
+
+  this.pageNumber.set(page);
+  this.loadUsers();
+}
+
+
+
   loadUsers(): void {
     this.isLoading.set(true);
-    this.userService.getPagedUsers().subscribe({
+    this.userService.getPagedUsers(this.pageNumber(), this.pageSize()).subscribe({
       next: (result) => {
         this.users.set(result.items);
         this.totalCount.set(result.totalCount);
         this.pageNumber.set(result.pageNumber);
         this.pageSize.set(result.pageSize);
+        this.totalPages.set(result.totalPages);
         this.isLoading.set(false);
       },
       error: (error) => {

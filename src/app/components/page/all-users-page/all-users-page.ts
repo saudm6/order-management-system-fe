@@ -27,7 +27,7 @@ export class AllUsersPage implements OnInit {
 
 
   changePage(page: number): void {
-  if (page < 1 || page > this.totalCount()) {
+  if (page < 1 || page > this.totalPages()) {
     return;
   }
 

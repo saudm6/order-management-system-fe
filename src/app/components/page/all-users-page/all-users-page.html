@@ -1,59 +1,81 @@
 <main class="min-h-screen bg-slate-50 px-6 py-10">
   <div class="mx-auto max-w-5xl">
-  <h1 class="mb-6 text-3xl font-bold text-slate-800">Users</h1>
-
-  @if (isLoading()) {
-    <p class="text-sm font-medium text-indigo-600">Loading users...</p>
-  } @else {
-    <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-lg shadow-slate-200/60">
-      <table class="w-max min-w-full divide-y divide-slate-200 whitespace-nowrap">
-        <thead class="bg-indigo-600">
-          <tr>
-            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">UUID</th>
-            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Name</th>
-            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Gender</th>
-            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Date of Birth</th>
-
-            <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white">Email</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-100">
-          @for (user of users(); track user.id) {
-            <tr class="transition-colors odd:bg-white even:bg-indigo-50/40 hover:bg-indigo-50">
-              <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">{{ user.id }}</td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">
-                {{ user.first_name }} {{ user.middle_name }} {{ user.last_name  }}
-              </td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">{{ user.gender }}</td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">{{ user.dob }}</td>
-              <td class="whitespace-nowrap px-6 py-4 text-sm text-indigo-700">{{ user.email }}</td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="5" class="px-6 py-10 text-center text-sm text-slate-500">No users found.</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-
-      <nav aria-label="User pagination">
-        <button
-            type="button"
-            [disabled]="pageNumber() === 1"
-            (click)="changePage(pageNumber() - 1)">
-            Previous
-        </button>
-
-        <span>Page {{ pageNumber() }} of {{ totalPages() }}</span>
-
-        <button
-            type="button"
-            [disabled]="pageNumber() === totalPages()"
-            (click)="changePage(pageNumber() + 1)">
-            Next
-        </button>
-        </nav>
+    <div class="mb-7">
+      <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Users</h1>
+      <p class="mt-1 text-sm text-slate-500">Browse and manage your user records.</p>
     </div>
-  }
+
+    @if (isLoading()) {
+      <div class="rounded-2xl border border-indigo-100 bg-white px-6 py-12 text-center shadow-sm">
+        <p class="text-sm font-semibold text-indigo-600">Loading users...</p>
+      </div>
+    } @else {
+      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-200/70">
+        <div class="overflow-x-auto">
+          <table class="w-max min-w-full whitespace-nowrap">
+            <thead class="bg-gradient-to-r from-indigo-700 to-indigo-600">
+              <tr>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-indigo-50">UUID</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-indigo-50">Name</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-indigo-50">Gender</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-indigo-50">Date of Birth</th>
+                <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-indigo-50">Email</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              @for (user of users(); track user.id) {
+                <tr class="group bg-white transition-colors duration-150 even:bg-slate-50/70 hover:bg-indigo-50">
+                  <td class="px-6 py-5 font-mono text-xs text-slate-500 group-hover:text-indigo-700">{{ user.id }}</td>
+                  <td class="px-6 py-5 text-sm font-bold text-slate-900">
+                    {{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}
+                  </td>
+                  <td class="px-6 py-5">
+                    <span class="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700">
+                      {{ user.gender }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-5 text-sm font-medium text-slate-600">{{ user.dob }}</td>
+                  <td class="px-6 py-5 text-sm font-semibold text-indigo-600">{{ user.email }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="5" class="px-6 py-14 text-center text-sm font-medium text-slate-500">No users found.</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <nav
+          aria-label="User pagination"
+          class="flex flex-col items-center justify-between gap-4 border-t border-slate-200 bg-slate-50/80 px-6 py-5 sm:flex-row"
+        >
+          <p class="text-sm font-medium text-slate-500">
+            Page <span class="font-bold text-slate-900">{{ pageNumber() }}</span>
+            of <span class="font-bold text-slate-900">{{ totalPages() }}</span>
+          </p>
+
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              [disabled]="pageNumber() === 1"
+              (click)="changePage(pageNumber() - 1)"
+              class="inline-flex min-w-28 items-center justify-center rounded-lg border border-indigo-200 bg-white px-5 py-2.5 text-sm font-bold text-indigo-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-300 hover:bg-indigo-50 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-indigo-100 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-400 disabled:shadow-none disabled:hover:translate-y-0"
+            >
+              Previous
+            </button>
+
+            <button
+              type="button"
+              [disabled]="pageNumber() === totalPages()"
+              (click)="changePage(pageNumber() + 1)"
+              class="inline-flex min-w-28 items-center justify-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-indigo-200 transition-all duration-200 hover:-translate-y-0.5 hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200 focus:outline-none focus:ring-4 focus:ring-indigo-200 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none disabled:hover:translate-y-0"
+            >
+              Next
+            </button>
+          </div>
+        </nav>
+      </div>
+    }
   </div>
 </main>

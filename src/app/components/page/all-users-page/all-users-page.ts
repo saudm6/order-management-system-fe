@@ -1,41 +1,36 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserService } from '../../../service/user-service';
 import { UserData } from '../../../models/user-data';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-all-users-page',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './all-users-page.html',
   styleUrl: './all-users-page.css',
 })
 export class AllUsersPage implements OnInit {
   private userService = inject(UserService);
 
-  readonly users= signal<UserData[]>([]);
+  readonly users = signal<UserData[]>([]);
   readonly totalCount = signal(0);
   readonly pageNumber = signal(1);
   readonly pageSize = signal(5);
   readonly isLoading = signal(false);
   readonly totalPages = signal(0);
-  
-  // selectedUser: UserData | null = null;
 
   ngOnInit(): void {
     this.loadUsers();
   }
 
-
-
   changePage(page: number): void {
-  if (page < 1 || page > this.totalPages()) {
-    return;
+    if (page < 1 || page > this.totalPages()) {
+      return;
+    }
+
+    this.pageNumber.set(page);
+    this.loadUsers();
   }
-
-  this.pageNumber.set(page);
-  this.loadUsers();
-}
-
-
 
   loadUsers(): void {
     this.isLoading.set(true);
@@ -54,12 +49,4 @@ export class AllUsersPage implements OnInit {
       },
     });
   }
-
-  // openUserDetails(user: UserData): void {
-  //   this.selectedUser = user;
-  // }
-  
-  // closeUserDetails(): void {
-  //   this.selectedUser = null;
-  // }
 }

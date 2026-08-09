@@ -1,0 +1,7 @@
+<div class="modal">
+  <app-user-details-page
+    mode="create"
+    (submitted)="handleSubmit($event)"
+    (cancelled)="cancelled.emit()"
+  />
+</div>

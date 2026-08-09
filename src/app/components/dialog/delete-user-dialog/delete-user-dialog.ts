@@ -1,0 +1,9 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-delete-user-dialog',
+  imports: [],
+  templateUrl: './delete-user-dialog.html',
+  styleUrl: './delete-user-dialog.css',
+})
+export class DeleteUserDialog {}

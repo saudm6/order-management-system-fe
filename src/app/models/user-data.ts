@@ -5,7 +5,7 @@ export interface UserData {
     middle_name: string;
     last_name: string;
     gender: string;
-    dob: Date;
+    dob: string;
     email: string;
     password: string;
 }

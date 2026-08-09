@@ -33,7 +33,7 @@ export class UserService {
         middle_name: response.middle_name,
         last_name: response.last_name,
         gender: response.gender,
-        dob: new Date(response.dob),
+        dob: response.dob,
         email: response.email,
         password: response.password
       };
@@ -49,7 +49,7 @@ export class UserService {
         middle_name: response.middle_name,
         last_name: response.last_name,
         gender: response.gender,
-        dob: new Date(response.dob),
+        dob: response.dob,
         email: response.email,
         password: response.password
       };
@@ -66,7 +66,7 @@ export class UserService {
         middle_name: response.middle_name,
         last_name: response.last_name,
         gender: response.gender,
-        dob: new Date(response.dob),
+        dob: response.dob,
         email: response.email,
         password: response.password
       };

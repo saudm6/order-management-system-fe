@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserService } from '../../../service/user-service';
 import { UserData } from '../../../models/user-data';
 import { RouterLink } from '@angular/router';
+import { UserFormValue } from '../../../models/user-form-value';
 
 @Component({
   selector: 'app-all-users-page',
@@ -18,6 +19,7 @@ export class AllUsersPage implements OnInit {
   readonly pageSize = signal(5);
   readonly isLoading = signal(false);
   readonly totalPages = signal(0);
+
 
   ngOnInit(): void {
     this.loadUsers();

@@ -1,1 +1,13 @@
-<p>all-users-list works!</p>
+<app-all-users-page
+    [users] = "users()"
+    [isLoading]="isLoading()"
+    [pageNumber]="pageNumber()"
+    [pageSize]="pageSize()"
+    [totalPages]="totalPages()"
+    [totalCount]="totalCount()"
+    (createUser)="createUser()"
+    (editUser)="editUser($event)"
+    (deleteUser)="deleteUser($event)"
+    (pageChange)="changePage($event)"
+    (pageChangeSize)="changePageSize($event)"
+/>

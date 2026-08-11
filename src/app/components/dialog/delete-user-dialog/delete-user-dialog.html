@@ -1,1 +1,45 @@
-<p>delete-user-dialog works!</p>
+<section class="delete-dialog">
+  <header class="dialog-header">
+    <div class="warning-icon" aria-hidden="true">!</div>
+
+    <div>
+      <h2 class="dialog-title">Delete user?</h2>
+      <p class="dialog-description">
+        This action cannot be undone.
+      </p>
+    </div>
+  </header>
+
+  <mat-dialog-content class="dialog-content">
+    <p>
+      Are you sure you want to permanently delete
+      <strong>{{ data.userName }}</strong>?
+    </p>
+
+    @if (errorMessage()) {
+      <div class="error-message" role="alert">
+        {{ errorMessage() }}
+      </div>
+    }
+  </mat-dialog-content>
+
+  <footer class="dialog-actions">
+    <button
+      class="button cancel-button"
+      type="button"
+      [disabled]="isDeleting()"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+
+    <button
+      class="button delete-button"
+      type="button"
+      [disabled]="isDeleting()"
+      (click)="confirmDelete()"
+    >
+      {{ isDeleting() ? 'Deleting...' : 'Delete user' }}
+    </button>
+  </footer>
+</section>

@@ -1,0 +1,7 @@
+<app-create-user-page
+  [userForm]="userForm"
+  [isSubmitting]="isSubmitting()"
+  [errorMessage]="errorMessage()"
+  (submitted)="createUser()"
+  (cancelled)="cancel()"
+/>

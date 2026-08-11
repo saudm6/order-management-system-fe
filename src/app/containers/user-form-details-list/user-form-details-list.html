@@ -1,1 +1,10 @@
-<p>user-form-details-list works!</p>
+<app-user-form-details-page
+  [user]="user()"
+  [userForm]="userForm"
+  [isLoading]="isLoading()"
+  [isSubmitting]="isSaving()"
+  [errorMessage]="errorMessage()"
+  (saveUser)="saveUser($event)"
+  (retry)="loadUser()"
+  (closeDialog)="cancel()"
+/>

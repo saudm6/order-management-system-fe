@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
-import { AllUsersPage } from './components/page/all-users-page/all-users-page';
-import { UserFormDetailsPage} from './components/page/user-form-details-page/user-form-details-page'
-import { CreateUsersDialog } from './components/dialog/create-users-dialog/create-users-dialog';
+import { AllUsersList } from './containers/all-users-list/all-users-list';
+import { CreateUserList } from './containers/create-user-list/create-user-list';
 export const routes: Routes = [
     { path: '', redirectTo: 'users', pathMatch: 'full' },
-    { path: 'users/:id/edit', component: UserFormDetailsPage },
-    { path: 'users', component: AllUsersPage },
-    { path: 'users/create', component: CreateUsersDialog },
+    // { path: 'users/:id/edit', component: UserFormDetailsList },
+    { path: 'users', component: AllUsersList },
+    { path: 'users/create', component: CreateUserList },
     { path: '**', redirectTo: 'users' },
 ];

@@ -1,0 +1,96 @@
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-action,
+.delete-action {
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.edit-action {
+  border-color: #c7d7fe;
+  background: #eef4ff;
+  color: #3538cd;
+}
+
+.edit-action:hover {
+  background: #e0eaff;
+}
+
+.delete-action {
+  border-color: #fecdca;
+  background: #fef3f2;
+  color: #b42318;
+}
+
+.delete-action:hover {
+  background: #fee4e2;
+}
+.create-user-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4f46e5, #6d43df);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  box-shadow:
+    0 4px 12px rgb(79 70 229 / 25%),
+    0 1px 2px rgb(16 24 40 / 10%);
+  transition:
+    background 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.create-user-button:hover {
+  background: linear-gradient(135deg, #4338ca, #5b32cb);
+  box-shadow:
+    0 7px 18px rgb(79 70 229 / 30%),
+    0 2px 4px rgb(16 24 40 / 10%);
+  transform: translateY(-1px);
+}
+
+.create-user-button:active {
+  box-shadow: 0 2px 7px rgb(79 70 229 / 22%);
+  transform: translateY(0);
+}
+
+.create-user-button:focus-visible {
+  outline: 3px solid rgb(79 70 229 / 25%);
+  outline-offset: 3px;
+}
+
+.create-user-icon {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 18%);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .create-user-button {
+    width: 100%;
+  }
+}

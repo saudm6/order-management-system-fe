@@ -1,0 +1,131 @@
+<main class="create-page">
+  <div class="page-container">
+    <button
+      class="back-button"
+      type="button"
+      [disabled]="isSubmitting()"
+      (click)="cancelled.emit()"
+    >
+      <span aria-hidden="true">←</span>
+      Back to users
+    </button>
+
+    <section class="create-card">
+      <header class="card-header">
+        <div>
+          <h1 class="page-title">Create user</h1>
+          <p class="page-description">
+            Enter the personal information and account details for the new user.
+          </p>
+        </div>
+      </header>
+
+      @if (errorMessage()) {
+        <div class="error-banner" role="alert">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <form
+        class="user-form"
+        [formGroup]="userForm()"
+        (ngSubmit)="submitted.emit()"
+      >
+        <div class="form-content">
+          <div class="form-grid">
+            <label class="form-field">
+              <span class="field-label">First name</span>
+              <input
+                type="text"
+                formControlName="first_name"
+                placeholder="Enter first name"
+              />
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">Middle name</span>
+              <input
+                type="text"
+                formControlName="middle_name"
+                placeholder="Enter middle name"
+              />
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">Last name</span>
+              <input
+                type="text"
+                formControlName="last_name"
+                placeholder="Enter last name"
+              />
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">Gender</span>
+              <select formControlName="gender">
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">Date of birth</span>
+              <input type="date" formControlName="dob" />
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">Email address</span>
+              <input
+                type="email"
+                formControlName="email"
+                placeholder="name@example.com"
+              />
+
+              @if (
+                userForm().get('email')?.touched &&
+                userForm().get('email')?.invalid
+              ) {
+                <span class="field-error">
+                  Enter a valid email address.
+                </span>
+              }
+            </label>
+
+            <label class="form-field form-field-wide">
+              <span class="field-label">Password</span>
+              <input
+                type="password"
+                formControlName="password"
+              />
+            </label>
+          </div>
+        </div>
+
+        <footer class="form-actions">
+          <button
+            class="button button-secondary"
+            type="button"
+            [disabled]="isSubmitting()"
+            (click)="cancelled.emit()"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="button button-primary"
+            type="submit"
+            [disabled]="isSubmitting()"
+          >
+            @if (isSubmitting()) {
+              <span class="button-spinner" aria-hidden="true"></span>
+              Creating...
+            } @else {
+              Create user
+            }
+          </button>
+        </footer>
+      </form>
+    </section>
+  </div>
+</main>

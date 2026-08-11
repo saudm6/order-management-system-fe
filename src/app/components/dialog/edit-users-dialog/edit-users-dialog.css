@@ -1,0 +1,242 @@
+:host {
+  display: block;
+  color: #172033;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+.edit-dialog {
+  display: flex;
+  width: 100%;
+  max-height: 90vh;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.dialog-header {
+  padding: 26px 28px 20px;
+  border-bottom: 1px solid #e7eaf0;
+  background: linear-gradient(135deg, #f8faff 0%, #ffffff 70%);
+}
+
+.dialog-title {
+  margin: 0;
+  color: #172033;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.dialog-description {
+  margin: 6px 0 0;
+  color: #667085;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+mat-dialog-content.dialog-content {
+  max-height: 60vh;
+  padding: 26px 28px !important;
+  overflow-y: auto;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-field-wide {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  color: #344054;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 9px;
+  outline: none;
+  background: #ffffff;
+  color: #172033;
+  font: inherit;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.form-field input::placeholder {
+  color: #98a2b3;
+}
+
+.form-field input:hover,
+.form-field select:hover {
+  border-color: #98a2b3;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 14%);
+}
+
+.form-field input.ng-invalid.ng-touched {
+  border-color: #d92d20;
+}
+
+.form-field input.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 3px rgb(217 45 32 / 12%);
+}
+
+.field-hint {
+  color: #667085;
+  font-size: 0.78rem;
+}
+
+.field-error {
+  color: #d92d20;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 28px;
+  border-top: 1px solid #e7eaf0;
+  background: #fafbfc;
+}
+
+.button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 100ms ease;
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button-secondary {
+  border-color: #d0d5dd;
+  background: #ffffff;
+  color: #344054;
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: #f6f7f9;
+  border-color: #98a2b3;
+}
+
+.button-primary {
+  background: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 12%);
+}
+
+.button-primary:hover:not(:disabled) {
+  background: #4338ca;
+}
+
+.button:focus-visible {
+  outline: 3px solid rgb(79 70 229 / 25%);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.loading-state {
+  display: flex;
+  min-height: 220px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #667085;
+}
+
+.loading-spinner,
+.button-spinner {
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+.loading-spinner {
+  width: 22px;
+  height: 22px;
+  color: #4f46e5;
+}
+
+.button-spinner {
+  width: 15px;
+  height: 15px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .dialog-header {
+    padding: 22px 20px 17px;
+  }
+
+  mat-dialog-content.dialog-content {
+    padding: 22px 20px !important;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field-wide {
+    grid-column: auto;
+  }
+
+  .dialog-actions {
+    padding: 16px 20px;
+  }
+
+  .button {
+    flex: 1;
+  }
+}

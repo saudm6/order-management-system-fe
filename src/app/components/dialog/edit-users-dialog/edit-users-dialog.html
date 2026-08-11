@@ -1,21 +1,121 @@
-<div
-  class="fixed inset-0 z-[9999] overflow-y-auto bg-slate-950/60"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="edit-user-title"
-  (click)="cancelled.emit()"
+<form
+  class="edit-dialog"
+  [formGroup]="userForm"
+  (ngSubmit)="saveUser()"
 >
-  <div class="flex min-h-full items-start justify-center p-3 sm:items-center sm:p-6">
-    <div
-      class="my-3 w-full min-w-0 max-w-2xl overflow-hidden rounded-xl bg-white shadow-2xl sm:my-0 sm:rounded-2xl"
-      (click)="$event.stopPropagation()"
-    >
-      <app-user-details-page
-        [user]="user()"
-        [isSubmitting]="isSubmitting()"
-        (submitted)="updated.emit($event)"
-        (cancelled)="cancelled.emit()"
-      />
+  <header class="dialog-header">
+    <div>
+      <h2 class="dialog-title">Edit user</h2>
+      <p class="dialog-description">
+        Update the user’s personal information and account details.
+      </p>
     </div>
-  </div>
-</div>
+  </header>
+
+  <mat-dialog-content class="dialog-content">
+    @if (isLoading()) {
+      <div class="loading-state">
+        <span class="loading-spinner" aria-hidden="true"></span>
+        <p>Loading user information...</p>
+      </div>
+    } @else {
+      <div class="form-grid">
+        <label class="form-field">
+          <span class="field-label">First name</span>
+          <input
+            type="text"
+            formControlName="first_name"
+            placeholder="Enter first name"
+          />
+        </label>
+
+        <label class="form-field">
+          <span class="field-label">Middle name</span>
+          <input
+            type="text"
+            formControlName="middle_name"
+            placeholder="Enter middle name"
+          />
+        </label>
+
+        <label class="form-field">
+          <span class="field-label">Last name</span>
+          <input
+            type="text"
+            formControlName="last_name"
+            placeholder="Enter last name"
+          />
+        </label>
+
+        <label class="form-field">
+          <span class="field-label">Gender</span>
+          <select formControlName="gender">
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </label>
+
+        <label class="form-field">
+          <span class="field-label">Date of birth</span>
+          <input type="date" formControlName="dob" />
+        </label>
+
+        <label class="form-field">
+          <span class="field-label">Email address</span>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="name@example.com"
+          />
+
+          @if (
+            userForm.controls.email.touched &&
+            userForm.controls.email.invalid
+          ) {
+            <span class="field-error">
+              Enter a valid email address.
+            </span>
+          }
+        </label>
+
+        <label class="form-field form-field-wide">
+          <span class="field-label">New password</span>
+          <input
+            type="password"
+            formControlName="password"
+            autocomplete="new-password"
+            placeholder="Leave empty to keep the current password"
+          />
+          <span class="field-hint">
+            Only enter a password if you want to change it.
+          </span>
+        </label>
+      </div>
+    }
+  </mat-dialog-content>
+
+  <footer class="dialog-actions">
+    <button
+      class="button button-secondary"
+      type="button"
+      [disabled]="isSubmitting()"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+
+    <button
+      class="button button-primary"
+      type="submit"
+      [disabled]="isLoading() || isSubmitting()"
+    >
+      @if (isSubmitting()) {
+        <span class="button-spinner" aria-hidden="true"></span>
+        Saving...
+      } @else {
+        Save changes
+      }
+    </button>
+  </footer>
+</form>

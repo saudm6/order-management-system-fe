@@ -2,16 +2,16 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { CreateUserPage } from '../../components/page/create-user-page/create-user-page';
+import { RegisterUserPage } from '../../components/page/register-user-page/register-user-page';
 import { UserService } from '../../service';
 
 @Component({
-  selector: 'app-create-user-list',
-  imports: [CreateUserPage],
-  templateUrl: './create-user-list.html',
-  styleUrl: './create-user-list.css',
+  selector: 'app-register-user-list',
+  imports: [RegisterUserPage],
+  templateUrl: './register-user-list.html',
+  styleUrl: './register-user-list.css',
 })
-export class CreateUserList {
+export class RegisterUserList {
   private readonly formBuilder = inject(FormBuilder);
   private readonly userService = inject(UserService);
   private readonly router = inject(Router);
@@ -20,16 +20,12 @@ export class CreateUserList {
   readonly errorMessage = signal('');
 
   readonly userForm = this.formBuilder.nonNullable.group({
-    first_name: [''],
-    middle_name: [''],
-    last_name: [''],
-    gender: [''],
-    dob: [''],
+    fullName: [''],
     email: ['', Validators.email],
     password: [''],
   });
 
-  createUser(): void {
+  registerUser(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       return;
@@ -41,14 +37,14 @@ export class CreateUserList {
     this.isSubmitting.set(true);
     this.errorMessage.set('');
 
-    this.userService.createUser(this.userForm.getRawValue()).subscribe({
+    this.userService.registerUser(this.userForm.getRawValue()).subscribe({
       next: () => {
         this.isSubmitting.set(false);
         this.router.navigate(['/users']);
       },
       error: (error) => {
         console.error('Unable to load user: ', error);
-        this.errorMessage.set('Unable to create user');
+        this.errorMessage.set('Unable to register user');
         this.isSubmitting.set(false);
       },
     });

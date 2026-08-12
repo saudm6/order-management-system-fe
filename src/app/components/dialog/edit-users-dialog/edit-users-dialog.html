@@ -21,44 +21,12 @@
     } @else {
       <div class="form-grid">
         <label class="form-field">
-          <span class="field-label">First name</span>
+          <span class="field-label">Full name</span>
           <input
             type="text"
-            formControlName="first_name"
-            placeholder="Enter first name"
+            formControlName="fullName"
+            placeholder="Enter full name"
           />
-        </label>
-
-        <label class="form-field">
-          <span class="field-label">Middle name</span>
-          <input
-            type="text"
-            formControlName="middle_name"
-            placeholder="Enter middle name"
-          />
-        </label>
-
-        <label class="form-field">
-          <span class="field-label">Last name</span>
-          <input
-            type="text"
-            formControlName="last_name"
-            placeholder="Enter last name"
-          />
-        </label>
-
-        <label class="form-field">
-          <span class="field-label">Gender</span>
-          <select formControlName="gender">
-            <option value="">Select gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </label>
-
-        <label class="form-field">
-          <span class="field-label">Date of birth</span>
-          <input type="date" formControlName="dob" />
         </label>
 
         <label class="form-field">
@@ -77,19 +45,6 @@
               Enter a valid email address.
             </span>
           }
-        </label>
-
-        <label class="form-field form-field-wide">
-          <span class="field-label">New password</span>
-          <input
-            type="password"
-            formControlName="password"
-            autocomplete="new-password"
-            placeholder="Leave empty to keep the current password"
-          />
-          <span class="field-hint">
-            Only enter a password if you want to change it.
-          </span>
         </label>
       </div>
     }

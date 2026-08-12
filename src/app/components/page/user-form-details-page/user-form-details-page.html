@@ -48,45 +48,9 @@
                 <form [formGroup]="userForm()" (ngSubmit)="saveUser.emit(userForm().getRawValue())" class="space-y-5">
                     <div class="grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2"> <label class="block min-w-0">
                             <span class="mb-1 block text-sm font-semibold text-slate-700">
-                                First name
+                                Full Name
                             </span>
-                            <input type="text" formControlName="first_name"
-                                class="w-full min-w-0 max-w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
-                        </label>
-
-                        <label class="block min-w-0">
-                            <span class="mb-1 block text-sm font-semibold text-slate-700">
-                                Middle name
-                            </span>
-                            <input type="text" formControlName="middle_name"
-                                class="w-full min-w-0 max-w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
-                        </label>
-
-                        <label class="block min-w-0">
-                            <span class="mb-1 block text-sm font-semibold text-slate-700">
-                                Last name
-                            </span>
-                            <input type="text" formControlName="last_name"
-                                class="w-full min-w-0 max-w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
-                        </label>
-
-                        <label class="block min-w-0">
-                            <span class="mb-1 block text-sm font-semibold text-slate-700">
-                                Gender
-                            </span>
-                            <select formControlName="gender"
-                                class="w-full min-w-0 max-w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
-                                <option value="">Select gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </label>
-
-                        <label class="block min-w-0">
-                            <span class="mb-1 block text-sm font-semibold text-slate-700">
-                                Date of birth
-                            </span>
-                            <input type="date" formControlName="dob"
+                            <input type="text" formControlName="fullName"
                                 class="w-full min-w-0 max-w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
                         </label>
 
@@ -106,14 +70,6 @@
                             }
                         </label>
                     </div>
-
-                    <label class="block min-w-0">
-                        <span class="mb-1 block text-sm font-semibold text-slate-700">
-                            Password
-                        </span>
-                        <input type="password" formControlName="password" autocomplete="new-password"
-                            class="w-full min-w-0 max-w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100" />
-                    </label>
 
                     <div class="flex justify-end gap-3 border-t border-slate-200 pt-5">
                         <button type="button" [disabled]=

@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal, input, output } from '@angular/core'
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../service/user-service';
 import { UserData } from '../../../models/user-data';
-import { UserFormValue } from '../../../models/user-form-value';
+import { UpdateUserRequest } from '../../../models/update-user-request';
 import { readonly } from '@angular/forms/signals';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -21,7 +21,7 @@ export class UserFormDetailsPage {
   readonly errorMessage = input('');
 
 
-  readonly saveUser = output<UserFormValue>();
+  readonly saveUser = output<UpdateUserRequest>();
   readonly retry = output<void>();
   readonly closeDialog = output<void>();
 }

@@ -21,13 +21,8 @@ export class EditUsersDialog implements OnInit {
   readonly isSubmitting = signal(false);
 
   readonly userForm = this.formBuilder.nonNullable.group({
-    first_name: [''],
-    middle_name: [''],
-    last_name: [''],
-    gender: [''],
-    dob: [''],
+    fullName: [''],
     email: ['', Validators.email],
-    password: [''],
   });
 
   ngOnInit(): void {
@@ -40,13 +35,8 @@ export class EditUsersDialog implements OnInit {
     this.userService.getUserById(this.data.userId).subscribe({
       next: (user) => {
         this.userForm.patchValue({
-          first_name: user.first_name ?? '',
-          middle_name: user.middle_name ?? '',
-          last_name: user.last_name ?? '',
-          gender: user.gender ?? '',
-          dob: user.dob ?? '',
+          fullName: user.fullName ?? '',
           email: user.email ?? '',
-          password: user.password ?? '',
         });
         this.isLoading.set(false);
       },

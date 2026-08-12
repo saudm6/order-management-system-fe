@@ -2,12 +2,12 @@ import { Component, input, output } from '@angular/core';
 import { Form, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-create-user-page',
+  selector: 'app-register-user-page',
   imports: [ReactiveFormsModule],
-  templateUrl: './create-user-page.html',
-  styleUrl: './create-user-page.css',
+  templateUrl: './register-user-page.html',
+  styleUrl: './register-user-page.css',
 })
-export class CreateUserPage {
+export class RegisterUserPage {
   readonly userForm = input.required<FormGroup>();
   readonly isSubmitting = input(false);
   readonly errorMessage = input('');

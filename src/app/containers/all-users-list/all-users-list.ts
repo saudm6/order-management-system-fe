@@ -6,7 +6,6 @@ import { AllUsersPage } from '../../components/page/all-users-page/all-users-pag
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditUsersDialog } from '../../components/dialog/edit-users-dialog/edit-users-dialog';
 import { DeleteUserDialog } from '../../components/dialog/delete-user-dialog/delete-user-dialog';
-import { CreateUserList } from '../create-user-list/create-user-list';
 import { Router } from '@angular/router';
 
 @Component({
@@ -49,8 +48,8 @@ export class AllUsersList implements OnInit {
     this.loadUsers();
   }
 
-  createUser(): void {
-    this.router.navigate(['users/create']);
+  registerUser(): void {
+    this.router.navigate(['users/register']);
   }
 
   editUser(userId: string): void {
@@ -89,9 +88,7 @@ export class AllUsersList implements OnInit {
   deleteUser(userId: string): void {
     const user = this.users().find((item) => item.id === userId);
 
-    const userName = user
-      ? `${user.first_name} ${user.middle_name ?? ''} ${user.last_name}`.trim()
-      : 'this user';
+    const userName = user?.fullName ?? 'this user';
 
     const dialogRef = this.dialog.open(DeleteUserDialog, {
       width: '460px',

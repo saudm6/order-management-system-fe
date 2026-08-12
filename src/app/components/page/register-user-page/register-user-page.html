@@ -1,4 +1,4 @@
-<main class="create-page">
+<main class="register-page">
   <div class="page-container">
     <button
       class="back-button"
@@ -10,10 +10,10 @@
       Back to users
     </button>
 
-    <section class="create-card">
+    <section class="register-card">
       <header class="card-header">
         <div>
-          <h1 class="page-title">Create user</h1>
+          <h1 class="page-title">Register user</h1>
           <p class="page-description">
             Enter the personal information and account details for the new user.
           </p>
@@ -34,44 +34,12 @@
         <div class="form-content">
           <div class="form-grid">
             <label class="form-field">
-              <span class="field-label">First name</span>
+              <span class="field-label">Full name</span>
               <input
                 type="text"
-                formControlName="first_name"
-                placeholder="Enter first name"
+                formControlName="fullName"
+                placeholder="Enter full name"
               />
-            </label>
-
-            <label class="form-field">
-              <span class="field-label">Middle name</span>
-              <input
-                type="text"
-                formControlName="middle_name"
-                placeholder="Enter middle name"
-              />
-            </label>
-
-            <label class="form-field">
-              <span class="field-label">Last name</span>
-              <input
-                type="text"
-                formControlName="last_name"
-                placeholder="Enter last name"
-              />
-            </label>
-
-            <label class="form-field">
-              <span class="field-label">Gender</span>
-              <select formControlName="gender">
-                <option value="">Select gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </label>
-
-            <label class="form-field">
-              <span class="field-label">Date of birth</span>
-              <input type="date" formControlName="dob" />
             </label>
 
             <label class="form-field">
@@ -119,9 +87,9 @@
           >
             @if (isSubmitting()) {
               <span class="button-spinner" aria-hidden="true"></span>
-              Creating...
+              Registering...
             } @else {
-              Create user
+              Register user
             }
           </button>
         </footer>

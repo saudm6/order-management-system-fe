@@ -5,12 +5,12 @@
     Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.create-page,
-.create-page * {
+.register-page,
+.register-page * {
   box-sizing: border-box;
 }
 
-.create-page {
+.register-page {
   min-height: 100vh;
   padding: 48px 24px;
   background:
@@ -58,7 +58,7 @@
 
 /* Card */
 
-.create-card {
+.register-card {
   overflow: hidden;
   border: 1px solid #e4e7ec;
   border-radius: 20px;
@@ -302,7 +302,7 @@
 /* Mobile */
 
 @media (max-width: 650px) {
-  .create-page {
+  .register-page {
     padding: 24px 14px;
   }
 
@@ -310,7 +310,7 @@
     max-width: 100%;
   }
 
-  .create-card {
+  .register-card {
     border-radius: 15px;
   }
 

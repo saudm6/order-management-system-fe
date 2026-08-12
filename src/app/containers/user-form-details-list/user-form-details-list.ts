@@ -1,7 +1,7 @@
 import { Component, inject, signal, input, output, effect, OnInit } from '@angular/core';
 import { UserData } from '../../models';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { UserFormValue } from '../../models/user-form-value';
+import { UpdateUserRequest } from '../../models/update-user-request';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UserService } from '../../service/index';
 import { UserFormDetailsPage } from '../../components/page/user-form-details-page/user-form-details-page';
@@ -30,17 +30,12 @@ export class UserFormDetailsList implements OnInit {
 
   isSubmitting = input(false);
 
-  submitted = output<UserFormValue>();
+  submitted = output<UpdateUserRequest>();
   cancelled = output<void>();
 
   userForm = this.formBuilder.nonNullable.group({
-    first_name: [''],
-    middle_name: [''],
-    last_name: [''],
-    gender: [''],
-    dob: [''],
+    fullName: [''],
     email: ['', Validators.email],
-    password: [''],
   });
 
   ngOnInit(): void {
@@ -74,13 +69,8 @@ export class UserFormDetailsList implements OnInit {
         this.user.set(user);
 
         this.userForm.patchValue({
-          first_name: user.first_name ?? '',
-          middle_name: user.middle_name ?? '',
-          last_name: user.last_name ?? '',
-          gender: user.gender ?? '',
-          dob: user.dob ?? '',
+          fullName: user.fullName ?? '',
           email: user.email ?? '',
-          password: user.password ?? '',
         });
 
         this.isLoading.set(false);
@@ -93,7 +83,7 @@ export class UserFormDetailsList implements OnInit {
     });
   }
 
-  saveUser(value: UserFormValue): void {
+  saveUser(value: UpdateUserRequest): void {
     if (this.isSaving()) {
       return;
     }

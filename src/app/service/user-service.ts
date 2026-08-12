@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from "@angular/core";
 import { Observable, map } from 'rxjs';
-import { UserData,UserPagedResult } from '../models/index';
+import { RegisterUserRequest, UpdateUserRequest, UserData, UserPagedResult } from '../models/index';
 
 @Injectable({
   providedIn: "root",
@@ -11,10 +11,10 @@ export class UserService {
   protected httpClient = inject(HttpClient);
   protected apiObpUrl = `http://localhost:5210/api/users`;
 
-  getPagedUsers(pageNumber : number, pageSize : number) : Observable<UserPagedResult<any>> {
+  getPagedUsers(pageNumber : number, pageSize : number) : Observable<UserPagedResult<UserData>> {
 
-    return this.httpClient.get(`${this.apiObpUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`).pipe(map((response: any) => {
-      const pagedResult: UserPagedResult<any> = {
+    return this.httpClient.get<UserPagedResult<UserData>>(`${this.apiObpUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`).pipe(map((response) => {
+      const pagedResult: UserPagedResult<UserData> = {
         items: response.items,
         totalCount: response.totalCount,
         pageNumber: response.pageNumber,
@@ -26,52 +26,32 @@ export class UserService {
   }
 
   getUserById(userId: string) : Observable<UserData> {
-    return this.httpClient.get<UserData>(`${this.apiObpUrl}/${userId}`).pipe(map((response: any) => {
+    return this.httpClient.get<UserData>(`${this.apiObpUrl}/${userId}`).pipe(map((response) => {
       const userData: UserData = {
         id: response.id,
-        first_name: response.first_name,
-        middle_name: response.middle_name,
-        last_name: response.last_name,
-        gender: response.gender,
-        dob: response.dob,
+        fullName: response.fullName,
         email: response.email,
-        password: response.password
+        createdAt: response.createdAt,
       };
       return userData;
     }));
   }
 
-  createUser(userData: any): Observable<UserData> {
-    return this.httpClient.post<UserData>(`${this.apiObpUrl}`, userData).pipe(map((response: any) => {
+  registerUser(request: RegisterUserRequest): Observable<UserData> {
+    return this.httpClient.post<UserData>(`${this.apiObpUrl}/register`, request).pipe(map((response) => {
       const userData: UserData = {
         id: response.id,
-        first_name: response.first_name,
-        middle_name: response.middle_name,
-        last_name: response.last_name,
-        gender: response.gender,
-        dob: response.dob,
+        fullName: response.fullName,
         email: response.email,
-        password: response.password
+        createdAt: response.createdAt,
       };
       return userData;
       
     }))
   }
 
-  updateUser(userId: string, userData: any): Observable<UserData> {
-    return this.httpClient.patch<UserData>(`${this.apiObpUrl}/${userId}`, userData).pipe(map((response: any) => {
-      const updatedUserData: UserData = {
-        id: response.id,
-        first_name: response.first_name,
-        middle_name: response.middle_name,
-        last_name: response.last_name,
-        gender: response.gender,
-        dob: response.dob,
-        email: response.email,
-        password: response.password
-      };
-      return updatedUserData;
-    }));
+  updateUser(userId: string, request: UpdateUserRequest): Observable<UserData> {
+    return this.httpClient.patch<UserData>(`${this.apiObpUrl}/${userId}`, request);
   }
 
   deleteUser(userId: string): Observable<void> {

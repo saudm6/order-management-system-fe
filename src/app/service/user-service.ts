@@ -1,56 +1,71 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from "@angular/core";
+import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { LoginUserRequest, LoginUserResponse, RegisterUserRequest, UpdateUserRequest, UserData, UserPagedResult } from '../models/index';
+import {
+  LoginUserRequest,
+  LoginUserResponse,
+  RegisterUserRequest,
+  UpdateUserRequest,
+  UserData,
+  UserPagedResult,
+} from '../models/index';
+import { jwtDecode, type JwtPayload } from 'jwt-decode';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class UserService {
-
   protected httpClient = inject(HttpClient);
   protected apiObpUrl = `http://localhost:5210/api/users`;
   protected baseUrl = `http://localhost:5210/api`;
   // const token = localStorage.getItem('auth_token');
   // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-  getPagedUsers(pageNumber : number, pageSize : number) : Observable<UserPagedResult<UserData>> {
-
-    return this.httpClient.get<UserPagedResult<UserData>>(`${this.apiObpUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`).pipe(map((response) => {
-      const pagedResult: UserPagedResult<UserData> = {
-        items: response.items,
-        totalCount: response.totalCount,
-        pageNumber: response.pageNumber,
-        pageSize: response.pageSize,
-        totalPages: response.totalPages
-      };
-      return pagedResult;
-    }));
+  getPagedUsers(pageNumber: number, pageSize: number): Observable<UserPagedResult<UserData>> {
+    return this.httpClient
+      .get<UserPagedResult<UserData>>(
+        `${this.apiObpUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+      )
+      .pipe(
+        map((response) => {
+          const pagedResult: UserPagedResult<UserData> = {
+            items: response.items,
+            totalCount: response.totalCount,
+            pageNumber: response.pageNumber,
+            pageSize: response.pageSize,
+            totalPages: response.totalPages,
+          };
+          return pagedResult;
+        }),
+      );
   }
 
-  getUserById(userId: string) : Observable<UserData> {
-    return this.httpClient.get<UserData>(`${this.apiObpUrl}/${userId}`).pipe(map((response) => {
-      const userData: UserData = {
-        id: response.id,
-        fullName: response.fullName,
-        email: response.email,
-        createdAt: response.createdAt,
-      };
-      return userData;
-    }));
+  getUserById(userId: string): Observable<UserData> {
+    return this.httpClient.get<UserData>(`${this.apiObpUrl}/${userId}`).pipe(
+      map((response) => {
+        const userData: UserData = {
+          id: response.id,
+          fullName: response.fullName,
+          email: response.email,
+          createdAt: response.createdAt,
+        };
+        return userData;
+      }),
+    );
   }
 
   registerUser(request: RegisterUserRequest): Observable<UserData> {
-    return this.httpClient.post<UserData>(`${this.apiObpUrl}/register`, request).pipe(map((response) => {
-      const userData: UserData = {
-        id: response.id,
-        fullName: response.fullName,
-        email: response.email,
-        createdAt: response.createdAt,
-      };
-      return userData;
-      
-    }))
+    return this.httpClient.post<UserData>(`${this.apiObpUrl}/register`, request).pipe(
+      map((response) => {
+        const userData: UserData = {
+          id: response.id,
+          fullName: response.fullName,
+          email: response.email,
+          createdAt: response.createdAt,
+        };
+        return userData;
+      }),
+    );
   }
 
   updateUser(userId: string, request: UpdateUserRequest): Observable<UserData> {
@@ -66,5 +81,25 @@ export class UserService {
   }
 
 
+  getToken(): string | null {
+    return localStorage.getItem('authToken');
+  }
+  setToken(token: string): void {
+    localStorage.setItem('authToken', token);
+  }
 
+  IsLoggedIn(): boolean {
+    const token = this.getToken();
+
+    if (!token){
+      return false;
+    }
+
+    try{
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      return typeof decodedToken.exp === 'number' && decodedToken.exp * 1000 > Date.now();
+    } catch {
+      return false;
+    }
+  }
 }

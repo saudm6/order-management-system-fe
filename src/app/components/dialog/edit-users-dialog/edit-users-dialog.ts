@@ -1,10 +1,17 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, DestroyRef } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../service/user-service';
 import { EditUserDialogData } from '../../../models/edit-user-dialog-data';
+import { rxState } from '@rx-angular/state';
+import { finalize } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-
+interface EditUsersDialogState{
+  isLoading: boolean;
+  isSubmitting: boolean;
+  errorMessage: string;
+}
 @Component({
   selector: 'app-edit-users-dialog',
   imports: [ReactiveFormsModule, MatDialogModule],
@@ -16,9 +23,23 @@ export class EditUsersDialog implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<EditUsersDialog>);
   private readonly userService = inject(UserService);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
 
-  readonly isLoading = signal(false);
-  readonly isSubmitting = signal(false);
+
+  private readonly state = rxState<EditUsersDialogState>(({ set }) => {
+
+    set({
+      isLoading: false,
+      isSubmitting: false,
+      errorMessage: '',
+    });
+  });
+
+
+  readonly isLoading = this.state.signal('isLoading');
+  readonly isSubmitting = this.state.signal('isSubmitting');
+  readonly errorMessage = this.state.signal('errorMessage');
+
 
   readonly userForm = this.formBuilder.nonNullable.group({
     fullName: [''],
@@ -30,19 +51,25 @@ export class EditUsersDialog implements OnInit {
   }
 
   loadUser() {
-    this.isLoading.set(true);
 
-    this.userService.getUserById(this.data.userId).subscribe({
+    this.state.set({ isLoading: true });
+    
+    this.userService.getUserById(this.data.userId)
+    .pipe(
+      takeUntilDestroyed (this.destroyRef), 
+      finalize(() => {
+        this.state.set({ isLoading: false });
+      }))
+    .subscribe({
       next: (user) => {
         this.userForm.patchValue({
           fullName: user.fullName ?? '',
           email: user.email ?? '',
         });
-        this.isLoading.set(false);
       },
       error: (error) => {
         console.error('Unable to load user: ', error);
-        this.isLoading.set(false);
+        this.state.set({ errorMessage: 'Unable to load user.', });
       },
     });
   }
@@ -56,8 +83,7 @@ export class EditUsersDialog implements OnInit {
     if (this.isSubmitting()) {
       return;
     }
-
-    this.isSubmitting.set(true);
+    this.state.set({ isSubmitting: true });
 
     this.userService.updateUser(this.data.userId, this.userForm.getRawValue()).subscribe({
       next: () => {
@@ -66,7 +92,7 @@ export class EditUsersDialog implements OnInit {
 
       error: (error) => {
         console.error('Unable to update user: ', error);
-        this.isSubmitting.set(false);
+        this.state.set({ isSubmitting: false, errorMessage: 'Unable to update the user.', });
       },
     });
   }

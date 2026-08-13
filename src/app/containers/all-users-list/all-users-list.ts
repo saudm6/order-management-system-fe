@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from './../../service/index';
 // import { Router } from '@angular/router';
 import { UserData } from '../../models/user-data';
@@ -7,6 +7,17 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { EditUsersDialog } from '../../components/dialog/edit-users-dialog/edit-users-dialog';
 import { DeleteUserDialog } from '../../components/dialog/delete-user-dialog/delete-user-dialog';
 import { Router } from '@angular/router';
+import { rxState } from '@rx-angular/state';
+import { finalize } from 'rxjs';
+
+interface AllUserState {
+  users: UserData[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  isLoading: boolean;
+  totalPages: number;
+}
 
 @Component({
   selector: 'app-all-users-list',
@@ -19,12 +30,23 @@ export class AllUsersList implements OnInit {
   private readonly userService = inject(UserService);
   private readonly router = inject(Router);
 
-  readonly users = signal<UserData[]>([]);
-  readonly totalCount = signal(0);
-  readonly pageNumber = signal(1);
-  readonly pageSize = signal(5);
-  readonly isLoading = signal(false);
-  readonly totalPages = signal(0);
+  private readonly state = rxState<AllUserState>(({ set }) => {
+    set({
+      users: [],
+      totalCount: 0,
+      pageNumber: 1,
+      pageSize: 5,
+      isLoading: false,
+      totalPages: 0,
+    });
+  });
+
+  readonly users = this.state.signal('users');
+  readonly totalCount = this.state.signal('totalCount');
+  readonly pageNumber = this.state.signal('pageNumber');
+  readonly pageSize = this.state.signal('pageSize');
+  readonly isLoading = this.state.signal('isLoading');
+  readonly totalPages = this.state.signal('totalPages');
 
   ngOnInit(): void {
     this.loadUsers();
@@ -35,7 +57,7 @@ export class AllUsersList implements OnInit {
       return;
     }
 
-    this.pageNumber.set(page);
+    this.state.set({ pageNumber: page });
     this.loadUsers();
   }
 
@@ -43,8 +65,8 @@ export class AllUsersList implements OnInit {
     if (pageSize < 1) {
       return;
     }
-    this.pageSize.set(pageSize);
-    this.pageNumber.set(1);
+
+    this.state.set({ pageSize: pageSize, pageNumber: 1 });
     this.loadUsers();
   }
 
@@ -69,22 +91,30 @@ export class AllUsersList implements OnInit {
   }
 
   loadUsers(): void {
-    this.isLoading.set(true);
-    this.userService.getPagedUsers(this.pageNumber(), this.pageSize()).subscribe({
+    this.state.set({ isLoading: true });
+    this.userService.getPagedUsers(this.pageNumber(), this.pageSize())
+    .pipe(
+      finalize(() => {
+        this.state.set({ isLoading: false });
+      }),
+    )
+    .subscribe({
       next: (result) => {
-        this.users.set(result.items);
-        this.totalCount.set(result.totalCount);
-        this.pageNumber.set(result.pageNumber);
-        this.pageSize.set(result.pageSize);
-        this.totalPages.set(result.totalPages);
-        this.isLoading.set(false);
+
+        this.state.set({
+          users: result.items,
+          totalCount: result.totalCount,
+          pageNumber: result.pageNumber,
+          pageSize: result.pageSize,
+          totalPages: result.totalPages
+        });
       },
       error: (error) => {
         console.error('Error loading users:', error);
-        this.isLoading.set(false);
       },
     });
   }
+
   deleteUser(userId: string): void {
     const user = this.users().find((item) => item.id === userId);
 
@@ -106,7 +136,7 @@ export class AllUsersList implements OnInit {
       }
 
       if (this.users().length === 1 && this.pageNumber() > 1) {
-        this.pageNumber.update((page) => page - 1);
+        this.state.set({ pageNumber: this.pageNumber() - 1, });
       }
 
       this.loadUsers();

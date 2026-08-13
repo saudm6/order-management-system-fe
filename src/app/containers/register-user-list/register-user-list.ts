@@ -1,9 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { RegisterUserPage } from '../../components/page/register-user-page/register-user-page';
 import { UserService } from '../../service';
+import { rxState } from '@rx-angular/state';
+import { finalize } from 'rxjs';
+
+interface RegisterUserState {
+  isSubmitting: boolean;
+  errorMessage: string;
+}
 
 @Component({
   selector: 'app-register-user-list',
@@ -16,13 +22,20 @@ export class RegisterUserList {
   private readonly userService = inject(UserService);
   private readonly router = inject(Router);
 
-  readonly isSubmitting = signal(false);
-  readonly errorMessage = signal('');
+  private readonly state = rxState<RegisterUserState>(({ set }) => {
+    set({
+      isSubmitting: false,
+      errorMessage: '',
+    });
+  });
+
+  readonly isSubmitting = this.state.signal('isSubmitting');
+  readonly errorMessage = this.state.signal('errorMessage');
 
   readonly userForm = this.formBuilder.nonNullable.group({
-    fullName: [''],
-    email: ['', Validators.email],
-    password: [''],
+    fullName: ['', Validators.required],
+    email: ['', [Validators.email, Validators.required]],
+    password: ['', [Validators.minLength(8), Validators.required]],
   });
 
   registerUser(): void {
@@ -34,20 +47,29 @@ export class RegisterUserList {
       return;
     }
 
-    this.isSubmitting.set(true);
-    this.errorMessage.set('');
-
-    this.userService.registerUser(this.userForm.getRawValue()).subscribe({
-      next: () => {
-        this.isSubmitting.set(false);
-        this.router.navigate(['/users']);
-      },
-      error: (error) => {
-        console.error('Unable to load user: ', error);
-        this.errorMessage.set('Unable to register user');
-        this.isSubmitting.set(false);
-      },
+    this.state.set({
+      isSubmitting: true,
+      errorMessage: '',
     });
+
+    this.userService
+      .registerUser(this.userForm.getRawValue())
+      .pipe(
+        finalize(() => {
+          this.state.set({ isSubmitting: false });
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/users']);
+        },
+        error: (error) => {
+          console.error('Unable to load user: ', error);
+          this.state.set({
+            errorMessage: 'Unable to register user',
+          });
+        },
+      });
   }
   cancel(): void {
     if (!this.isSubmitting()) {

@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from "@angular/core";
 import { Observable, map } from 'rxjs';
-import { RegisterUserRequest, UpdateUserRequest, UserData, UserPagedResult } from '../models/index';
+import { LoginUserRequest, LoginUserResponse, RegisterUserRequest, UpdateUserRequest, UserData, UserPagedResult } from '../models/index';
 
 @Injectable({
   providedIn: "root",
@@ -10,6 +10,9 @@ export class UserService {
 
   protected httpClient = inject(HttpClient);
   protected apiObpUrl = `http://localhost:5210/api/users`;
+  protected baseUrl = `http://localhost:5210/api`;
+  // const token = localStorage.getItem('auth_token');
+  // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
   getPagedUsers(pageNumber : number, pageSize : number) : Observable<UserPagedResult<UserData>> {
 
@@ -54,7 +57,14 @@ export class UserService {
     return this.httpClient.patch<UserData>(`${this.apiObpUrl}/${userId}`, request);
   }
 
+  loginUser(request: LoginUserRequest): Observable<LoginUserResponse> {
+    return this.httpClient.post<LoginUserResponse>(`${this.baseUrl}/login`, request);
+  }
+
   deleteUser(userId: string): Observable<void> {
     return this.httpClient.delete<void>(`${this.apiObpUrl}/${userId}`);
   }
+
+
+
 }

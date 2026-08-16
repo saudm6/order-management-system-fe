@@ -5,6 +5,7 @@ import { RegisterUserPage } from '../../components/page/register-user-page/regis
 import { UserService } from '../../service';
 import { rxState } from '@rx-angular/state';
 import { finalize } from 'rxjs';
+import { contains } from '../../functions/index';
 
 interface RegisterUserState {
   isSubmitting: boolean;
@@ -35,7 +36,16 @@ export class RegisterUserList {
   readonly userForm = this.formBuilder.nonNullable.group({
     fullName: ['', Validators.required],
     email: ['', [Validators.email, Validators.required]],
-    password: ['', [Validators.minLength(8), Validators.required]],
+    password: [
+      '',
+      [
+        Validators.minLength(8),
+        Validators.required,
+        contains(/[A-Z]/, 'uppercase'),
+        contains(/[a-z]/, 'lowercase'),
+        contains(/[0-9]/, 'number'),
+      ],
+    ],
   });
 
   registerUser(): void {
@@ -61,19 +71,25 @@ export class RegisterUserList {
       )
       .subscribe({
         next: () => {
-          this.router.navigate(['/users']);
+          this.router.navigate(['/login']);
         },
         error: (error) => {
+          
+          const validationErrors = error.error?.errors;
+
           console.error('Unable to load user: ', error);
+          
+          const messages = validationErrors ? Object.values(validationErrors).flat() : [];
+
           this.state.set({
-            errorMessage: 'Unable to register user',
+            errorMessage: messages.join(' ') || 'Unable to register user',
           });
         },
       });
   }
   cancel(): void {
     if (!this.isSubmitting()) {
-      this.router.navigate(['/users']);
+      this.router.navigate(['/login']);
     }
   }
 }

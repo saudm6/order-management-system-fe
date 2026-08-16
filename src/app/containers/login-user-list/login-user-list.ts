@@ -80,4 +80,10 @@ export class LoginUserList {
       this.router.navigate(['/login']);
     }
   }
+
+  goToRegister(): void {
+    if (!this.isSubmitting()) {
+      this.router.navigate(['/users/register']);
+    }
+  }
 }

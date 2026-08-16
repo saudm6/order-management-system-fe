@@ -1,6 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { Form, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { getMatInputUnsupportedTypeError } from '@angular/material/input';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login-user-page',
@@ -15,4 +14,5 @@ export class LoginUserPage {
 
   readonly submitted = output<void>();
   readonly cancelled = output<void>();
+  readonly registerRequested = output<void>();
 }

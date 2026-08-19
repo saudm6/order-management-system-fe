@@ -1,0 +1,7 @@
+<app-add-product-page
+  [productForm]="productForm"
+  [isSubmitting]="isSubmitting()"
+  [errorMessage]="errorMessage()"
+  (submitted)="addProduct()"
+  (cancelled)="cancel()"
+/>

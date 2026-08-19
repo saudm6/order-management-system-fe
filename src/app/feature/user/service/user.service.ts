@@ -13,12 +13,12 @@ import { jwtDecode, type JwtPayload } from 'jwt-decode';
 })
 export class UserService {
   protected httpClient = inject(HttpClient);
-  protected apiObpUrl = `http://localhost:5210/api/users`;
+  protected apiServiceUrl = `http://localhost:5210/api/users`;
 
   getPagedUsers(pageNumber: number, pageSize: number): Observable<UserPagedResult<UserData>> {
     return this.httpClient
       .get<UserPagedResult<UserData>>(
-        `${this.apiObpUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+        `${this.apiServiceUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
       )
       .pipe(
         map((response) => {
@@ -35,7 +35,7 @@ export class UserService {
   }
 
   getUserById(userId: string): Observable<UserData> {
-    return this.httpClient.get<UserData>(`${this.apiObpUrl}/${userId}`).pipe(
+    return this.httpClient.get<UserData>(`${this.apiServiceUrl}/${userId}`).pipe(
       map((response) => {
         const userData: UserData = {
           id: response.id,
@@ -49,11 +49,11 @@ export class UserService {
   }
 
   updateUser(userId: string, request: UpdateUserRequest): Observable<UserData> {
-    return this.httpClient.patch<UserData>(`${this.apiObpUrl}/${userId}`, request);
+    return this.httpClient.patch<UserData>(`${this.apiServiceUrl}/${userId}`, request);
   }
 
   deleteUser(userId: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.apiObpUrl}/${userId}`);
+    return this.httpClient.delete<void>(`${this.apiServiceUrl}/${userId}`);
   }
 
 }

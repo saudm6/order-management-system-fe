@@ -2,9 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import {
-  CreateProduct
+  CreateProduct, ProductDataUpdate
 } from '../models/index';
-import { jwtDecode, type JwtPayload } from 'jwt-decode';
 import { ProductDisplay } from '../models/product-display';
 
 @Injectable({
@@ -12,95 +11,34 @@ import { ProductDisplay } from '../models/product-display';
 })
 export class ProductService {
   protected httpClient = inject(HttpClient);
-  protected apiObpUrl = `http://localhost:5210/api/product`;
-  protected baseUrl = `http://localhost:5210/api`;
-  // const token = localStorage.getItem('auth_token');
-  // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  protected apiProductUrl = `http://localhost:5210/api/product`;
 
 
   createProduct(request: CreateProduct): Observable<ProductDisplay>{
-    return this.httpClient.post<ProductDisplay>(`{this.apiObpUrl}/create`, request);
+    return this.httpClient.post<ProductDisplay>(`${this.apiProductUrl}`, request);
   }
 
-//   getPagedUsers(pageNumber: number, pageSize: number): Observable<UserPagedResult<UserData>> {
-//     return this.httpClient
-//       .get<UserPagedResult<UserData>>(
-//         `${this.apiObpUrl}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-//       )
-//       .pipe(
-//         map((response) => {
-//           const pagedResult: UserPagedResult<UserData> = {
-//             items: response.items,
-//             totalCount: response.totalCount,
-//             pageNumber: response.pageNumber,
-//             pageSize: response.pageSize,
-//             totalPages: response.totalPages,
-//           };
-//           return pagedResult;
-//         }),
-//       );
-//   }
+  getAllProducts(): Observable<ProductDisplay[]>{
+    return this.httpClient.get<ProductDisplay[]>(`${this.apiProductUrl}`);
+  }
 
-//   getUserById(userId: string): Observable<UserData> {
-//     return this.httpClient.get<UserData>(`${this.apiObpUrl}/${userId}`).pipe(
-//       map((response) => {
-//         const userData: UserData = {
-//           id: response.id,
-//           fullName: response.fullName,
-//           email: response.email,
-//           createdAt: response.createdAt,
-//         };
-//         return userData;
-//       }),
-//     );
-//   }
+  getProductById(productId: string): Observable<ProductDisplay>{
+    return this.httpClient.get<ProductDisplay>(`${this.apiProductUrl}/${productId}`).pipe(
+      map((response) => {
+        const productData: ProductDisplay = {
+          id: response.id,
+          name: response.name,
+          unitPrice: response.unitPrice,
+          availableStock: response.availableStock,
+          reservedStock: response.reservedStock
+        };
+        return productData;
+      }),
+    );
+  }
 
-//   registerUser(request: RegisterUserRequest): Observable<UserData> {
-//     return this.httpClient.post<UserData>(`${this.apiObpUrl}/register`, request).pipe(
-//       map((response) => {
-//         const userData: UserData = {
-//           id: response.id,
-//           fullName: response.fullName,
-//           email: response.email,
-//           createdAt: response.createdAt,
-//         };
-//         return userData;
-//       }),
-//     );
-//   }
+  updateProductDataById(productId: string, productUpdateData: ProductDataUpdate): Observable<ProductDataUpdate>{
+    return this.httpClient.patch<ProductDataUpdate>(`${this.apiProductUrl}/${productId}`, productUpdateData)
+  }
 
-//   updateUser(userId: string, request: UpdateUserRequest): Observable<UserData> {
-//     return this.httpClient.patch<UserData>(`${this.apiObpUrl}/${userId}`, request);
-//   }
-
-//   loginUser(request: LoginUserRequest): Observable<LoginUserResponse> {
-//     return this.httpClient.post<LoginUserResponse>(`${this.baseUrl}/login`, request);
-//   }
-
-//   deleteUser(userId: string): Observable<void> {
-//     return this.httpClient.delete<void>(`${this.apiObpUrl}/${userId}`);
-//   }
-
-
-//   getToken(): string | null {
-//     return localStorage.getItem('authToken');
-//   }
-//   setToken(token: string): void {
-//     localStorage.setItem('authToken', token);
-//   }
-
-//   IsLoggedIn(): boolean {
-//     const token = this.getToken();
-
-//     if (!token){
-//       return false;
-//     }
-
-//     try{
-//       const decodedToken = jwtDecode<JwtPayload>(token);
-//       return typeof decodedToken.exp === 'number' && decodedToken.exp * 1000 > Date.now();
-//     } catch {
-//       return false;
-//     }
-//   }
 }

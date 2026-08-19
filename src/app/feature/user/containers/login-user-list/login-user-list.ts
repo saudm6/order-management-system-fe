@@ -19,7 +19,7 @@ interface LoginUserState {
 })
 export class LoginUserList {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly userService = inject(AuthService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   private readonly state = rxState<LoginUserState>(({ set }) => {
@@ -51,7 +51,7 @@ export class LoginUserList {
       errorMessage: '',
     });
 
-    this.userService
+    this.authService
       .loginUser(this.userForm.getRawValue())
       .pipe(
         finalize(() => {

@@ -1,7 +1,5 @@
 import { Component, inject, OnInit, signal, input, output } from '@angular/core';
-import { UserService } from '../../../service';
 import { UserData } from '../../../models/user-data';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-all-users-page',

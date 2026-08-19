@@ -102,7 +102,6 @@ export class AllUsersList implements OnInit {
     )
     .subscribe({
       next: (result) => {
-
         this.state.set({
           users: result.items,
           totalCount: result.totalCount,

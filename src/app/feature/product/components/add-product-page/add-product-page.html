@@ -1,0 +1,146 @@
+<main class="product-page">
+  <div class="page-container">
+    <button
+      class="back-button"
+      type="button"
+      [disabled]="isSubmitting()"
+      (click)="cancelled.emit()"
+    >
+      <span aria-hidden="true">&larr;</span>
+      Back to products
+    </button>
+
+    <section class="product-card">
+      <header class="card-header">
+        <div>
+          <h1 class="page-title">Add product</h1>
+          <p class="page-description">
+            Enter the information and stock details for the new product.
+          </p>
+        </div>
+      </header>
+
+      @if (errorMessage()) {
+        <div class="error-banner" role="alert">
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <form
+        class="product-form"
+        [formGroup]="productForm()"
+        (ngSubmit)="submitted.emit()"
+      >
+        <div class="form-content">
+          <div class="form-grid">
+            <label class="form-field form-field-wide">
+              <span class="field-label">Product name</span>
+
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Enter product name"
+              />
+
+              @if (
+                productForm().get('name')?.touched &&
+                productForm().get('name')?.hasError('required')
+              ) {
+                <span class="field-error">
+                  Product name is required.
+                </span>
+              }
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">Unit price</span>
+
+              <input
+                type="number"
+                formControlName="unitPrice"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+              />
+
+              @if (
+                productForm().get('unitPrice')?.touched &&
+                productForm().get('unitPrice')?.hasError('required')
+              ) {
+                <span class="field-error">
+                  Unit price is required.
+                </span>
+              }
+            </label>
+
+            <label class="form-field">
+              <span class="field-label">Available stock</span>
+
+              <input
+                type="number"
+                formControlName="availableStock"
+                placeholder="0"
+                min="0"
+                step="1"
+              />
+
+              @if (
+                productForm().get('availableStock')?.touched &&
+                productForm().get('availableStock')?.hasError('required')
+              ) {
+                <span class="field-error">
+                  Available stock is required.
+                </span>
+              }
+            </label>
+
+            <label class="form-field form-field-wide">
+              <span class="field-label">Reserved stock</span>
+
+              <input
+                type="number"
+                formControlName="reservedStock"
+                placeholder="0"
+                min="0"
+                step="1"
+              />
+
+              @if (
+                productForm().get('reservedStock')?.touched &&
+                productForm().get('reservedStock')?.hasError('required')
+              ) {
+                <span class="field-error">
+                  Reserved stock is required.
+                </span>
+              }
+            </label>
+          </div>
+        </div>
+
+        <footer class="form-actions">
+          <button
+            class="button button-secondary"
+            type="button"
+            [disabled]="isSubmitting()"
+            (click)="cancelled.emit()"
+          >
+            Cancel
+          </button>
+
+          <button
+            class="button button-primary"
+            type="submit"
+            [disabled]="isSubmitting()"
+          >
+            @if (isSubmitting()) {
+              <span class="button-spinner" aria-hidden="true"></span>
+              Adding...
+            } @else {
+              Add product
+            }
+          </button>
+        </footer>
+      </form>
+    </section>
+  </div>
+</main>

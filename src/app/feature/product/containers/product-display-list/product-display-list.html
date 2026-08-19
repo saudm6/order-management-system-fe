@@ -1,0 +1,8 @@
+<!-- @if (productsDisplayState$ | async; as pds) { -->
+    <app-product-display-page
+    [productDisplay]="products()"
+    [isLoading]="isLoading()"
+    [errorMessage]="errorMessage()"
+    (addProduct)="goToAddProduct()"
+    />
+<!-- } -->

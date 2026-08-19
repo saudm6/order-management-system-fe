@@ -1,0 +1,298 @@
+:host {
+  display: block;
+  color: #172033;
+  font-family:
+    Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.product-page,
+.product-page * {
+  box-sizing: border-box;
+}
+
+.product-page {
+  min-height: 100vh;
+  padding: 48px 24px;
+  background:
+    radial-gradient(circle at 10% 5%, rgb(79 70 229 / 12%), transparent 28rem),
+    radial-gradient(circle at 90% 90%, rgb(14 165 233 / 8%), transparent 30rem),
+    #f5f7fb;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #4f46e5;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.back-button:hover:not(:disabled) {
+  background: rgb(79 70 229 / 8%);
+  color: #3730a3;
+}
+
+.back-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.product-card {
+  overflow: hidden;
+  border: 1px solid #e4e7ec;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow:
+    0 24px 60px rgb(16 24 40 / 10%),
+    0 4px 12px rgb(16 24 40 / 5%);
+}
+
+.card-header {
+  position: relative;
+  padding: 30px 34px 26px;
+  border-bottom: 1px solid #e7eaf0;
+  background:
+    linear-gradient(
+      120deg,
+      rgb(79 70 229 / 9%),
+      rgb(255 255 255 / 90%) 65%
+    );
+}
+
+.card-header::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #7c3aed, #0ea5e9);
+  content: "";
+}
+
+.page-title {
+  margin: 0;
+  color: #16213a;
+  font-size: 1.75rem;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.page-description {
+  max-width: 620px;
+  margin: 8px 0 0;
+  color: #667085;
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.error-banner {
+  margin: 24px 34px 0;
+  padding: 13px 15px;
+  border: 1px solid #fecdca;
+  border-left: 4px solid #d92d20;
+  border-radius: 9px;
+  background: #fef3f2;
+  color: #b42318;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-content {
+  padding: 30px 34px 34px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 23px;
+}
+
+.form-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field-wide {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  color: #344054;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+
+.form-field input {
+  width: 100%;
+  min-height: 47px;
+  padding: 11px 13px;
+  border: 1px solid #cfd5df;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #172033;
+  font: inherit;
+  font-size: 0.95rem;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.form-field input::placeholder {
+  color: #98a2b3;
+}
+
+.form-field input:hover {
+  border-color: #98a2b3;
+  background: #fcfcfd;
+}
+
+.form-field input:focus {
+  border-color: #4f46e5;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgb(79 70 229 / 12%);
+}
+
+.form-field input.ng-invalid.ng-touched {
+  border-color: #d92d20;
+}
+
+.field-error {
+  color: #d92d20;
+  font-size: 0.78rem;
+  font-weight: 550;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 34px;
+  border-top: 1px solid #e7eaf0;
+  background: #f9fafb;
+}
+
+.button {
+  display: inline-flex;
+  min-width: 125px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button-secondary {
+  border-color: #d0d5dd;
+  background: #ffffff;
+  color: #344054;
+}
+
+.button-secondary:hover:not(:disabled) {
+  border-color: #98a2b3;
+  background: #f2f4f7;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #4f46e5, #6d43df);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgb(79 70 229 / 25%);
+}
+
+.button-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4338ca, #5b32cb);
+  box-shadow: 0 6px 16px rgb(79 70 229 / 30%);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.button-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 650px) {
+  .product-page {
+    padding: 24px 14px;
+  }
+
+  .product-card {
+    border-radius: 15px;
+  }
+
+  .card-header {
+    padding: 25px 21px 21px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .error-banner {
+    margin: 20px 20px 0;
+  }
+
+  .form-content {
+    padding: 24px 20px 27px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+
+  .form-field-wide {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    padding: 17px 20px;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

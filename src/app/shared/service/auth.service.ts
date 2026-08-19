@@ -14,10 +14,10 @@ import { jwtDecode, type JwtPayload } from 'jwt-decode';
 })
 export class AuthService {
   protected httpClient = inject(HttpClient);
-  protected apiObpUrl = `http://localhost:5210/api/account`;
+  protected apiAuthUrl = `http://localhost:5210/api/account`;
 
   registerUser(request: RegisterUserRequest): Observable<UserData> {
-    return this.httpClient.post<UserData>(`${this.apiObpUrl}/register`, request).pipe(
+    return this.httpClient.post<UserData>(`${this.apiAuthUrl}/register`, request).pipe(
       map((response) => {
         const userData: UserData = {
           id: response.id,
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   loginUser(request: LoginUserRequest): Observable<LoginUserResponse> {
-    return this.httpClient.post<LoginUserResponse>(`${this.apiObpUrl}/login`, request);
+    return this.httpClient.post<LoginUserResponse>(`${this.apiAuthUrl}/login`, request);
   }
 
   getToken(): string | null {

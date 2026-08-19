@@ -1,0 +1,77 @@
+<main class="products-page">
+    <div class="page-container">
+        <header class="page-header">
+            <div>
+                <h1 class="page-title">Products</h1>
+                <p class="page-description">
+                    Browse and manage your product records.
+                </p>
+            </div>
+
+            <div class="page-header-actions">
+                <span class="product-count">
+                    {{ productDisplay().length }} products
+                </span>
+
+                <button class="add-product-button" type="button" (click)="addProduct.emit()">
+                    Add product
+                </button>
+            </div>
+        </header>
+
+        @if (errorMessage()) {
+        <div class="error-banner" role="alert">
+            {{ errorMessage() }}
+        </div>
+        }
+
+        @if (isLoading()) {
+        <div class="loading-card">
+            <p>Loading products...</p>
+        </div>
+        } @else {
+        <section class="table-card">
+            <div class="table-wrapper">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Unit Price</th>
+                            <th>Available Stock</th>
+                            <th>Reserved Stock</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (product of productDisplay(); track product.id) {
+                        <tr>
+                            <td class="name-cell">
+                                {{ product.name }}
+                            </td>
+
+                            <td class="price-cell">
+                                ${{ product.unitPrice }}
+                            </td>
+
+                            <td>
+                                {{ product.availableStock }}
+                            </td>
+
+                            <td>
+                                {{ product.reservedStock }}
+                            </td>
+                        </tr>
+                        } @empty {
+                        <tr>
+                            <td colspan="5" class="empty-cell">
+                                No products found.
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        }
+    </div>
+</main>

@@ -13,11 +13,11 @@ import { ProductService } from '../../service/product.service';
 import { ProductDisplay } from '../../models';
 import { ProductDisplayPage } from '../../components/product-display-page/product-display-page';
 import { AddProductList } from '../add-product-list/add-product-list';
+import { OrderLineItemService } from '../../../order-line-item/service/order-line-item.service';
 
 interface ProductDisplayState {
   products: ProductDisplay[];
   isSubmitting: boolean;
-  isLoading: boolean;
   errorMessage: string;
 }
 
@@ -30,43 +30,38 @@ interface ProductDisplayState {
 export class ProductDisplayList {
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
+  private readonly orderLineItemService = inject(OrderLineItemService);
   private readonly state = rxState<ProductDisplayState>(({ set }) => {
     set({
       products: [],
       isSubmitting: false,
-      isLoading: false,
       errorMessage: '',
     });
   });
-  
+
   readonly products = this.state.signal('products');
   readonly isSubmitting = this.state.signal('isSubmitting');
-  readonly isLoading = this.state.signal('isLoading');
   readonly errorMessage = this.state.signal('errorMessage');
 
-
+  // connect
   // productsDisplayState$ = Observable<ProductDisplayState>;
-
 
   ngOnInit(): void {
     this.loadProducts();
   }
 
   loadProducts(): void {
-    if (this.state.get('isLoading')) {
-      return;
-    }
     if (this.state.get('isSubmitting')) {
       return;
     }
 
-    this.state.set({ isSubmitting: false, isLoading: true });
+    this.state.set({ isSubmitting: false });
 
     this.productService
       .getAllProducts()
       .pipe(
         finalize(() => {
-          this.state.set({ isLoading: false, isSubmitting: false });
+          this.state.set({ isSubmitting: false });
         }),
       )
       .subscribe({
@@ -82,5 +77,43 @@ export class ProductDisplayList {
 
   goToAddProduct(): void {
     this.router.navigate(['/product/add']);
+  }
+
+  addOrderLineItem(items: { productId: string; quantity: number }): void {
+    if (this.isSubmitting()) {
+      return;
+    }
+
+    if (!Number.isInteger(items.quantity) || items.quantity < 1) {
+      this.state.set({
+        errorMessage: 'Quantity must be at least 1',
+      });
+      return;
+    }
+
+    this.state.set({
+      isSubmitting: true,
+      errorMessage: '',
+    });
+
+    const request = {
+      productId: items.productId,
+      quantity: items.quantity,
+    };
+
+    this.orderLineItemService.addOrderLineItem(request).pipe(
+      finalize(() => {
+        this.state.set({ isSubmitting: false });
+      })
+    )
+    .subscribe({
+      next: () => {
+        this.state.set({ errorMessage: '' })
+      },
+      error: (error) => {
+        console.log('Unable to add order item:', error),
+        this.state.set({ errorMessage: 'Unable to add order item' })
+      },
+    });
   }
 }

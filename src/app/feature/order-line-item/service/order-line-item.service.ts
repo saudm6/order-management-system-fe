@@ -10,10 +10,10 @@ import {
 })
 export class OrderLineItemService {
   protected httpClient = inject(HttpClient);
-  protected apiOrderLineItemUrl = `http://localhost:5210/api/order-line-item`;
+  protected apiOrderLineItemUrl = `http://localhost:5210/api/order_line_item`;
 
-  addOrderLineItem(request: OrderLineItemRequest) : Observable<OrderLineItemRequest>{
-    return this.httpClient.post<OrderLineItemRequest>(`${this.apiOrderLineItemUrl}`, request);
+  addOrderLineItem(request: OrderLineItemRequest) : Observable<void> {
+    return this.httpClient.post<void>(`${this.apiOrderLineItemUrl}`, request);
   }
 
   getOrderLineItem() : Observable<OrderLineItemRequest>{

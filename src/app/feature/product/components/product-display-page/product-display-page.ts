@@ -8,11 +8,14 @@ import { ProductDisplay } from '../../models/';
   styleUrl: './product-display-page.css',
 })
 export class ProductDisplayPage {
+  readonly productDisplay = input.required<readonly ProductDisplay[]>();
+  readonly isSubmitting = input(false);
+  readonly errorMessage = input('');
 
-    readonly productDisplay = input.required<readonly ProductDisplay[]>();
-    readonly isLoading = input(false);
-    readonly errorMessage = input('');
-
-    readonly displayedProduct = output<void>();
-    readonly addProduct = output<void>();
+  readonly displayedProduct = output<void>();
+  readonly addProduct = output<void>();
+  readonly addOrderLineItem = output<{
+    productId: string;
+    quantity: number;
+  }>();
 }

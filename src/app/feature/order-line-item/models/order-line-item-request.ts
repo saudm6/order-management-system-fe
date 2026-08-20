@@ -1,4 +1,4 @@
 export interface OrderLineItemRequest {
-    productId: number,
+    productId: string,
     quantity: number,
 }

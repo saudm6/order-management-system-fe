@@ -237,3 +237,46 @@
     width: 100%;
   }
 }
+
+.quantity-input {
+  width: 82px;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  color: #172033;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.quantity-input:focus {
+  border-color: #4f46e5;
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 15%);
+}
+
+.action-cell {
+  min-width: 110px;
+}
+
+.add-order-line-item-button {
+  padding: 8px 14px;
+  border: 1px solid #c7d7fe;
+  border-radius: 7px;
+  background: #eef4ff;
+  color: #3538cd;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.add-order-line-item-button:hover:not(:disabled) {
+  background: #e0eaff;
+}
+
+.add-order-line-item-button:disabled,
+.quantity-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}

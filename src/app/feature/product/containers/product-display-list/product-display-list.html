@@ -1,8 +1,9 @@
 <!-- @if (productsDisplayState$ | async; as pds) { -->
     <app-product-display-page
     [productDisplay]="products()"
-    [isLoading]="isLoading()"
+    [isSubmitting]="isSubmitting()"
     [errorMessage]="errorMessage()"
     (addProduct)="goToAddProduct()"
+    (addOrderLineItem)="addOrderLineItem($event)"
     />
 <!-- } -->

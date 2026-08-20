@@ -1,7 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../shared/service';
 import { rxState } from '@rx-angular/state';
 import { finalize } from 'rxjs';
 import { contains } from '../../../../shared/functions/index';
@@ -21,7 +20,6 @@ interface ProductState {
 })
 export class AddProductList {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
 

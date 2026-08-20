@@ -25,9 +25,9 @@
         </div>
         }
 
-        @if (isLoading()) {
+        @if (isSubmitting()) {
         <div class="loading-card">
-            <p>Loading products...</p>
+            <p>Submitting products...</p>
         </div>
         } @else {
         <section class="table-card">
@@ -39,6 +39,8 @@
                             <th>Unit Price</th>
                             <th>Available Stock</th>
                             <th>Reserved Stock</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
@@ -60,10 +62,23 @@
                             <td>
                                 {{ product.reservedStock }}
                             </td>
+                            <td class="quantity-cell">
+                                <input #quantityInput class="quantity-input" type="number" min="1" step="1" value="1"
+                                    aria-label="Product quantity" [disabled]="isSubmitting()" />
+                            </td>
+
+                            <td class="action-cell">
+                                <button class="add-order-line-item-button" type="button" [disabled]="isSubmitting()"
+                                    (click)="addOrderLineItem.emit({
+                                    productId: product.id,
+                                    quantity: quantityInput.valueAsNumber})">
+                                    Add
+                                </button>
+                            </td>
                         </tr>
                         } @empty {
                         <tr>
-                            <td colspan="5" class="empty-cell">
+                            <td colspan="6" class="empty-cell">
                                 No products found.
                             </td>
                         </tr>

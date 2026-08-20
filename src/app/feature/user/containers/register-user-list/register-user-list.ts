@@ -1,37 +1,36 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegisterUserPage } from '../../components/page/register-user-page/register-user-page';
 import { AuthService } from '../../../../shared/service';
-import { rxState } from '@rx-angular/state';
-import { finalize } from 'rxjs';
+import { rxState, RxState } from '@rx-angular/state';
+import { finalize, Observable } from 'rxjs';
 import { contains } from '../../../../shared/functions/index';
+import { AsyncPipe } from '@angular/common';
 
 interface RegisterUserState {
   isSubmitting: boolean;
   errorMessage: string;
 }
 
+type ViewModel = RegisterUserState;
+
 @Component({
   selector: 'app-register-user-list',
-  imports: [RegisterUserPage],
+  imports: [RegisterUserPage, AsyncPipe],
+  providers: [RxState],
   templateUrl: './register-user-list.html',
   styleUrl: './register-user-list.css',
 })
 export class RegisterUserList {
+
+  private readonly state = rxState<RegisterUserState>();
+
+  vm$: Observable<ViewModel>;
+
   private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-
-  private readonly state = rxState<RegisterUserState>(({ set }) => {
-    set({
-      isSubmitting: false,
-      errorMessage: '',
-    });
-  });
-
-  readonly isSubmitting = this.state.signal('isSubmitting');
-  readonly errorMessage = this.state.signal('errorMessage');
 
   readonly userForm = this.formBuilder.nonNullable.group({
     fullName: ['', Validators.required],
@@ -48,12 +47,21 @@ export class RegisterUserList {
     ],
   });
 
+  constructor() {
+    this.state.set({ 
+      isSubmitting: false,
+      errorMessage: '',
+    });
+
+    this.vm$ = this.state.select();
+  }
+
   registerUser(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       return;
     }
-    if (this.isSubmitting()) {
+    if (this.state.get('isSubmitting')) {
       return;
     }
 
@@ -77,7 +85,7 @@ export class RegisterUserList {
           
           const validationErrors = error.error?.errors;
 
-          console.error('Unable to load user: ', error);
+          console.error('Unable to register user: ', error);
           
           const messages = validationErrors ? Object.values(validationErrors).flat() : [];
 
@@ -88,7 +96,7 @@ export class RegisterUserList {
       });
   }
   cancel(): void {
-    if (!this.isSubmitting()) {
+    if (!this.state.get('isSubmitting')) {
       this.router.navigate(['/login']);
     }
   }

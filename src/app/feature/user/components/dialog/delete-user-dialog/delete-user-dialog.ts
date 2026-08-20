@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, DestroyRef } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -7,23 +7,33 @@ import {
 
 import { DeleteUserDialogData } from '../../../models/delete-user-dialog-data';
 import { UserService } from '../../../service';
-import { rxState } from '@rx-angular/state';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RxState, rxState } from '@rx-angular/state';
+import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 interface DeleteUserDialogState {
   isDeleting: boolean;
   errorMessage: string;
 }
 
+type ViewModel = DeleteUserDialogState;
+
 @Component({
   selector: 'app-delete-user-dialog',
-  imports: [MatDialogModule],
+  imports: [MatDialogModule, AsyncPipe],
+  providers: [RxState],
   templateUrl: './delete-user-dialog.html',
   styleUrl: './delete-user-dialog.css',
 })
 export class DeleteUserDialog {
+
+  private readonly state = rxState<DeleteUserDialogState>();
+
+  vm$: Observable<ViewModel>;
+
   readonly data = inject<DeleteUserDialogData>(MAT_DIALOG_DATA);
-  readonly destroyRef = inject(takeUntilDestroyed);
+  readonly destroyRef = inject(DestroyRef);
 
   private readonly dialogRef = inject(
     MatDialogRef<DeleteUserDialog>,
@@ -31,24 +41,24 @@ export class DeleteUserDialog {
 
   private readonly userService = inject(UserService);
 
-  private readonly state = rxState<DeleteUserDialogState>(({ set }) => {
-    set ({
+  constructor () {
+    this.state.set({ 
       isDeleting: false,
       errorMessage: '',
-    })
-  })
+    });
 
-  readonly isDeleting = this.state.signal('isDeleting');
-  readonly errorMessage = this.state.signal('errorMessage');
+    this.vm$ = this.state.select();
+  }
+
 
   confirmDelete(): void {
-    if (this.isDeleting()) {
+    if (this.state.get('isDeleting')) {
       return;
     }
 
     this.state.set({ isDeleting: true, errorMessage: '' });
 
-    this.userService.deleteUser(this.data.userId).pipe(this.destroyRef)
+    this.userService.deleteUser(this.data.userId).pipe(takeUntilDestroyed(this.destroyRef))
     .subscribe({
       next: () => {
         this.dialogRef.close(true);
@@ -62,7 +72,7 @@ export class DeleteUserDialog {
   }
 
   cancel(): void {
-    if (!this.isDeleting()) {
+    if (!this.state.get('isDeleting')) {
       this.dialogRef.close(false);
     }
   }

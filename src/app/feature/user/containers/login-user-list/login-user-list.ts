@@ -1,48 +1,56 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginUserPage } from '../../components/page/login-user-page/login-user-page';
 import { AuthService } from '../../../../shared/service/auth.service';
-import { rxState } from '@rx-angular/state';
-import { finalize } from 'rxjs';
+import { rxState, RxState } from '@rx-angular/state';
+import { finalize, Observable } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 interface LoginUserState {
   isSubmitting: boolean;
   errorMessage: string;
 }
 
+type ViewModel = LoginUserState;
+
 @Component({
   selector: 'app-login-user-list',
-  imports: [LoginUserPage],
+  imports: [LoginUserPage, AsyncPipe],
+  providers: [RxState],
   templateUrl: './login-user-list.html',
   styleUrl: './login-user-list.css',
 })
 export class LoginUserList {
+
+  private readonly state = rxState<LoginUserState>();
+
+  vm$: Observable<ViewModel>;
+
+
   private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-
-  private readonly state = rxState<LoginUserState>(({ set }) => {
-    set({
-      isSubmitting: false,
-      errorMessage: '',
-    });
-  });
-
-  readonly isSubmitting = this.state.signal('isSubmitting');
-  readonly errorMessage = this.state.signal('errorMessage');
 
   readonly userForm = this.formBuilder.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
+  constructor() {
+    this.state.set({
+      isSubmitting: false,
+      errorMessage: '',
+    });
+
+    this.vm$ = this.state.select();
+  }
 
   loginUser(): void {
     if (this.userForm.invalid) {
       this.userForm.markAllAsTouched();
       return;
     }
-    if (this.isSubmitting()) {
+    if (this.state.get('isSubmitting')) {
       return;
     }
 
@@ -66,7 +74,7 @@ export class LoginUserList {
           }
 
           localStorage.setItem('authToken', response.token);
-          this.router.navigate(['/users']);
+          this.router.navigate(['/product']);
         },
         error: (error) => {
           console.error('Unable to login user: ', error);
@@ -76,13 +84,13 @@ export class LoginUserList {
   }
 
   cancel(): void {
-    if (!this.isSubmitting()) {
+    if (!this.state.get('isSubmitting')) {
       this.router.navigate(['/login']);
     }
   }
 
   goToRegister(): void {
-    if (!this.isSubmitting()) {
+    if (!this.state.get('isSubmitting')) {
       this.router.navigate(['/users/register']);
     }
   }

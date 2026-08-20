@@ -1,7 +1,9 @@
+@if (vm$ | async; as vm) {
 <app-add-product-page
   [productForm]="productForm"
-  [isSubmitting]="isSubmitting()"
-  [errorMessage]="errorMessage()"
+  [isSubmitting]="vm.isSubmitting"
+  [errorMessage]="vm.errorMessage"
   (submitted)="addProduct()"
   (cancelled)="cancel()"
 />
+}

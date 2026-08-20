@@ -1,7 +1,9 @@
+@if (vm$ | async; as vm) {
 <app-register-user-page
   [userForm]="userForm"
-  [isSubmitting]="isSubmitting()"
-  [errorMessage]="errorMessage()"
+  [isSubmitting]="vm.isSubmitting"
+  [errorMessage]="vm.errorMessage"
   (submitted)="registerUser()"
   (cancelled)="cancel()"
 />
+}

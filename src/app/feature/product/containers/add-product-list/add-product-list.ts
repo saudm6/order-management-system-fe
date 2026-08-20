@@ -1,37 +1,46 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { rxState } from '@rx-angular/state';
-import { finalize } from 'rxjs';
+import { RxState, rxState } from '@rx-angular/state';
+import { finalize, Observable } from 'rxjs';
 import { contains } from '../../../../shared/functions/index';
 import { ProductService } from '../../service/product.service';
 import { AddProductPage } from '../../components/add-product-page/add-product-page';
+import { AsyncPipe } from '@angular/common';
 
 interface ProductState {
   isSubmitting: boolean;
   errorMessage: string;
 }
 
+type ViewModel = ProductState;
+
 @Component({
   selector: 'app-add-product-list',
-  imports: [AddProductPage],
+  imports: [AddProductPage, AsyncPipe],
+  providers: [RxState],
   templateUrl: './add-product-list.html',
   styleUrl: './add-product-list.css',
 })
+
 export class AddProductList {
+
+  private readonly state = rxState<ProductState>();
+  vm$: Observable<ViewModel>;
+
   private readonly formBuilder = inject(FormBuilder);
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
 
-  private readonly state = rxState<ProductState>(({ set }) => {
-    set({
-      isSubmitting: false,
-      errorMessage: '',
-    });
-  });
+  // private readonly state = rxState<ProductState>(({ set }) => {
+  //   set({
+  //     isSubmitting: false,
+  //     errorMessage: '',
+  //   });
+  // });
 
-  readonly isSubmitting = this.state.signal('isSubmitting');
-  readonly errorMessage = this.state.signal('errorMessage');
+  // readonly isSubmitting = this.state.signal('isSubmitting');
+  // readonly errorMessage = this.state.signal('errorMessage');
 
   readonly productForm = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required]],
@@ -40,13 +49,19 @@ export class AddProductList {
     reservedStock: ['', [Validators.required]],
   });
 
+  constructor() {
+    this.state.set({ isSubmitting: false, errorMessage: '' });
+
+    this.vm$ = this.state.select();
+  }
+
   addProduct(): void {
     if (this.productForm.invalid){
       this.productForm.markAllAsTouched();
       return;
     }
 
-    if (this.isSubmitting()){
+    if (this.state.get('isSubmitting')){
       return;
     }
 
@@ -72,7 +87,7 @@ export class AddProductList {
   )
   .subscribe({
     next: () => {
-      this.state.set({ isSubmitting: false });
+      this.router.navigate(['/product'])
     },
     error: (error) => {
       console.error('Unable to add product:', error);
@@ -84,16 +99,9 @@ export class AddProductList {
   });
 }
 
-
   cancel(): void {
-    if (!this.isSubmitting()) {
+    if (!this.state.get('isSubmitting')) {
       this.router.navigate(['/product']);
     }
   }
-
-  // goToProductDisplayPage(): void {
-  //   if (!this.isSubmitting()) {
-  //     this.router.navigate(['/users/product']);
-  //   }
-  // }
 }

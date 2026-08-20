@@ -1,8 +1,5 @@
-<form
-  class="edit-dialog"
-  [formGroup]="userForm"
-  (ngSubmit)="saveUser()"
->
+@if (vm$ | async; as vm){
+<form class="edit-dialog" [formGroup]="userForm" (ngSubmit)="saveUser()">
   <header class="dialog-header">
     <div>
       <h2 class="dialog-title">Edit user</h2>
@@ -13,64 +10,53 @@
   </header>
 
   <mat-dialog-content class="dialog-content">
-    @if (isLoading()) {
-      <div class="loading-state">
-        <span class="loading-spinner" aria-hidden="true"></span>
-        <p>Loading user information...</p>
-      </div>
+    @if (vm.errorMessage) {
+    <div class="error-message" role="alert">
+      {{ vm.errorMessage }}
+    </div>
+    }
+    @if (vm.isLoading) {
+    <div class="loading-state">
+      <span class="loading-spinner" aria-hidden="true"></span>
+      <p>Loading user information...</p>
+    </div>
     } @else {
-      <div class="form-grid">
-        <label class="form-field">
-          <span class="field-label">Full name</span>
-          <input
-            type="text"
-            formControlName="fullName"
-            placeholder="Enter full name"
-          />
-        </label>
+    <div class="form-grid">
+      <label class="form-field">
+        <span class="field-label">Full name</span>
+        <input type="text" formControlName="fullName" placeholder="Enter full name" />
+      </label>
 
-        <label class="form-field">
-          <span class="field-label">Email address</span>
-          <input
-            type="email"
-            formControlName="email"
-            placeholder="name@example.com"
-          />
+      <label class="form-field">
+        <span class="field-label">Email address</span>
+        <input type="email" formControlName="email" placeholder="name@example.com" />
 
-          @if (
-            userForm.controls.email.touched &&
-            userForm.controls.email.invalid
-          ) {
-            <span class="field-error">
-              Enter a valid email address.
-            </span>
-          }
-        </label>
-      </div>
+        @if (
+        userForm.controls.email.touched &&
+        userForm.controls.email.invalid
+        ) {
+        <span class="field-error">
+          Enter a valid email address.
+        </span>
+        }
+      </label>
+    </div>
     }
   </mat-dialog-content>
 
   <footer class="dialog-actions">
-    <button
-      class="button button-secondary"
-      type="button"
-      [disabled]="isSubmitting()"
-      (click)="cancel()"
-    >
+    <button class="button button-secondary" type="button" [disabled]="vm.isSubmitting" (click)="cancel()">
       Cancel
     </button>
 
-    <button
-      class="button button-primary"
-      type="submit"
-      [disabled]="isLoading() || isSubmitting()"
-    >
-      @if (isSubmitting()) {
-        <span class="button-spinner" aria-hidden="true"></span>
-        Saving...
+    <button class="button button-primary" type="submit" [disabled]="vm.isLoading || vm.isSubmitting">
+      @if (vm.isSubmitting) {
+      <span class="button-spinner" aria-hidden="true"></span>
+      Saving...
       } @else {
-        Save changes
+      Save changes
       }
     </button>
   </footer>
 </form>
+}

@@ -1,13 +1,15 @@
+@if (vm$ | async; as vm){
 <app-all-users-page
-    [users] = "users()"
-    [isLoading]="isLoading()"
-    [pageNumber]="pageNumber()"
-    [pageSize]="pageSize()"
-    [totalPages]="totalPages()"
-    [totalCount]="totalCount()"
+    [users] = "vm.users"
+    [isLoading]="vm.isLoading"
+    [pageNumber]="vm.pageNumber"
+    [pageSize]="vm.pageSize"
+    [totalPages]="vm.totalPages"
+    [totalCount]="vm.totalCount"
     (registerUser)="registerUser()"
     (editUser)="editUser($event)"
     (deleteUser)="deleteUser($event)"
     (pageChange)="changePage($event)"
     (pageChangeSize)="changePageSize($event)"
 />
+}

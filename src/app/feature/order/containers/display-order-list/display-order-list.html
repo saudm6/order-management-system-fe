@@ -1,0 +1,6 @@
+@if (vm$ | async; as vm) {
+  <app-display-order-page
+    [orderDisplay]="vm.orderListResponse"
+    [errorMessage]="vm.errorMessage"
+  />
+}

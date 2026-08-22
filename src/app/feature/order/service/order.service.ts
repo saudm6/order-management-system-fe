@@ -1,24 +1,21 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import {
-  OrderLineItemRequest,
-  OrderLineItemResponse
-} from '../models/';
+import { OrderRequest, OrderResponse } from '../models/';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrderLineItemService {
+export class OrderService {
   protected httpClient = inject(HttpClient);
-  protected apiOrderLineItemUrl = `http://localhost:5210/api/order_line_item`;
+  protected apiOrderUrl = `http://localhost:5210/api/order`;
 
-  addOrderLineItem(request: OrderLineItemRequest) : Observable<void> {
-    return this.httpClient.post<void>(`${this.apiOrderLineItemUrl}`, request);
+  addOrder() : Observable<void> {
+    return this.httpClient.post<void>(`${this.apiOrderUrl}`, null);
   }
 
-  getOrderLineItem() : Observable<OrderLineItemResponse[]>{
-    return this.httpClient.get<OrderLineItemResponse[]>(`${this.apiOrderLineItemUrl}`)
+  getOrder() : Observable<OrderResponse[]>{
+    return this.httpClient.get<OrderResponse[]>(`${this.apiOrderUrl}`)
   }
 
 

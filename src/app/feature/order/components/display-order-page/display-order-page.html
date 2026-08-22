@@ -1,0 +1,80 @@
+<main class="orders-page">
+  <div class="page-container">
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">Orders</h1>
+        <p class="page-description">
+          Browse your previous orders and order totals.
+        </p>
+      </div>
+
+      <span class="order-count">
+        {{ orderDisplay().length }} orders
+      </span>
+    </header>
+
+    @if (errorMessage()) {
+      <div class="error-message" role="alert">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <section class="table-card">
+      <div class="table-wrapper">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Order Number</th>
+              <th>Status</th>
+              <th>Subtotal</th>
+              <th>Discount</th>
+              <th>Grand Total</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (order of orderDisplay(); track order.id) {
+              <tr>
+                <td class="order-number-cell">
+                  #{{ order.orderNumber }}
+                </td>
+
+                <td>
+                  <span
+                    class="status-badge"
+                    [class.status-pending]="order.status === 'Pending'"
+                  >
+                    {{ order.status }}
+                  </span>
+                </td>
+
+                <td>
+                  ${{ order.subTotal }}
+                </td>
+
+                <td class="discount-cell">
+                  ${{ order.discountTotal }}
+                </td>
+
+                <td class="total-cell">
+                  ${{ order.grandTotal }}
+                </td>
+
+                <td>
+                  {{ order.createdAt }}
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="empty-cell">
+                  No orders found.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>

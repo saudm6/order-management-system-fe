@@ -32,16 +32,6 @@ export class AddProductList {
   private readonly productService = inject(ProductService);
   private readonly router = inject(Router);
 
-  // private readonly state = rxState<ProductState>(({ set }) => {
-  //   set({
-  //     isSubmitting: false,
-  //     errorMessage: '',
-  //   });
-  // });
-
-  // readonly isSubmitting = this.state.signal('isSubmitting');
-  // readonly errorMessage = this.state.signal('errorMessage');
-
   readonly productForm = this.formBuilder.nonNullable.group({
     name: ['', [Validators.required]],
     unitPrice: ['', [Validators.required]],

@@ -5,12 +5,12 @@
     Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.order-line-items-page,
-.order-line-items-page * {
+.orders-page,
+.orders-page * {
   box-sizing: border-box;
 }
 
-.order-line-items-page {
+.orders-page {
   min-height: 100vh;
   padding: 40px 24px;
   background: #f8fafc;
@@ -44,21 +44,15 @@
   font-size: 0.95rem;
 }
 
-.back-button {
-  min-height: 42px;
-  padding: 9px 16px;
+.order-count {
+  padding: 8px 13px;
   border: 1px solid #c7d7fe;
-  border-radius: 9px;
+  border-radius: 999px;
   background: #eef4ff;
   color: #3538cd;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 700;
-}
-
-.back-button:hover {
-  background: #e0eaff;
+  white-space: nowrap;
 }
 
 .error-message {
@@ -71,21 +65,6 @@
   color: #b42318;
   font-size: 0.875rem;
   font-weight: 600;
-}
-
-.loading-card {
-  padding: 48px 24px;
-  border: 1px solid #dbe3ef;
-  border-radius: 16px;
-  background: #ffffff;
-  text-align: center;
-  box-shadow: 0 8px 20px rgb(15 23 42 / 6%);
-}
-
-.loading-card p {
-  margin: 0;
-  color: #4f46e5;
-  font-weight: 700;
 }
 
 .table-card {
@@ -102,18 +81,18 @@
   overflow-x: auto;
 }
 
-.order-line-items-table {
+.orders-table {
   width: 100%;
   min-width: 850px;
   border-collapse: collapse;
   white-space: nowrap;
 }
 
-.order-line-items-table thead {
+.orders-table thead {
   background: linear-gradient(90deg, #4338ca, #4f46e5);
 }
 
-.order-line-items-table th {
+.orders-table th {
   padding: 16px 20px;
   color: #eef2ff;
   font-size: 0.75rem;
@@ -123,23 +102,58 @@
   text-transform: uppercase;
 }
 
-.order-line-items-table td {
+.orders-table td {
   padding: 18px 20px;
   border-bottom: 1px solid #f1f5f9;
   color: #334155;
   font-size: 0.9rem;
 }
 
-.order-line-items-table tbody tr:nth-child(even) {
+.orders-table tbody tr {
+  background: #ffffff;
+  transition: background-color 150ms ease;
+}
+
+.orders-table tbody tr:nth-child(even) {
   background: #f8fafc;
 }
 
-.order-line-items-table tbody tr:hover {
+.orders-table tbody tr:hover {
   background: #eef2ff;
 }
 
-.order-line-items-table tbody tr:last-child td {
+.orders-table tbody tr:last-child td {
   border-bottom: 0;
+}
+
+.order-number-cell {
+  color: #0f172a !important;
+  font-weight: 750;
+}
+
+.discount-cell {
+  color: #b42318 !important;
+  font-weight: 650;
+}
+
+.total-cell {
+  color: #4f46e5 !important;
+  font-weight: 750;
+}
+
+.status-badge {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #ecfdf3;
+  color: #027a48;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-pending {
+  background: #fffaeb;
+  color: #b54708;
 }
 
 .empty-cell {
@@ -150,7 +164,7 @@
 }
 
 @media (max-width: 640px) {
-  .order-line-items-page {
+  .orders-page {
     padding: 28px 14px;
   }
 
@@ -163,50 +177,7 @@
     font-size: 1.65rem;
   }
 
-  .back-button {
-    width: 100%;
-  }
-}
-.add-order-button {
-  display: inline-flex;
-  min-height: 44px;
-  align-self: flex-start;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 18px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #4f46e5, #6d43df);
-  color: #ffffff;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgb(79 70 229 / 25%);
-  transition:
-    background 150ms ease,
-    box-shadow 150ms ease,
-    transform 150ms ease;
-}
-
-.add-order-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #4338ca, #5b32cb);
-  box-shadow: 0 7px 18px rgb(79 70 229 / 30%);
-  transform: translateY(-1px);
-}
-
-.add-order-button:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.add-order-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-  box-shadow: none;
-}
-
-@media (max-width: 640px) {
-  .add-order-button {
-    width: 100%;
+  .order-count {
+    align-self: flex-start;
   }
 }

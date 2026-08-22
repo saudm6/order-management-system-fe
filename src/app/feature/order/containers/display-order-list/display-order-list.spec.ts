@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddOrderLineItemPage } from './add-order-line-item-page';
+import { DisplayOrderList } from './display-order-list';
 
-describe('AddOrderLineItemPage', () => {
-  let component: AddOrderLineItemPage;
-  let fixture: ComponentFixture<AddOrderLineItemPage>;
+describe('DisplayOrderList', () => {
+  let component: DisplayOrderList;
+  let fixture: ComponentFixture<DisplayOrderList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddOrderLineItemPage],
+      imports: [DisplayOrderList],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddOrderLineItemPage);
+    fixture = TestBed.createComponent(DisplayOrderList);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

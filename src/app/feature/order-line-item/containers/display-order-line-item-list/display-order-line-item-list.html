@@ -1,1 +1,8 @@
-<p>display-order-line-item-list works!</p>
+@if (vm$ | async; as vm) {
+<app-display-order-line-item-page
+  [orderLineItemDisplay]="vm.orderLineItemsResponse"
+  [isSubmitting]="vm.isSubmitting"
+  [errorMessage]="vm.errorMessage"
+  (addOrder)="addOrder()"
+/>
+}

@@ -5,7 +5,8 @@ import { LoginUserList } from './feature/user/containers/login-user-list/login-u
 import { authGuard } from './shared/guard/auth.guard';
 import { AddProductList } from './feature/product/containers/add-product-list/add-product-list';
 import { ProductDisplayList } from './feature/product/containers/product-display-list/product-display-list';
-
+import { DisplayOrderLineItemList } from './feature/order-line-item/containers/display-order-line-item-list/display-order-line-item-list';
+import { DisplayOrderList } from './feature/order/containers/display-order-list/display-order-list';
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'users', component: AllUsersList, canActivate: [authGuard] },
@@ -13,5 +14,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginUserList },
     { path: 'product', component: ProductDisplayList, canActivate: [authGuard]},
     { path: 'product/add', component: AddProductList, canActivate: [authGuard]},
+    { path: 'order-line-item', component: DisplayOrderLineItemList, canActivate: [authGuard]},
+    { path: 'order', component: DisplayOrderList, canActivate: [authGuard]},
     { path: '**', redirectTo: 'login' },
 ];

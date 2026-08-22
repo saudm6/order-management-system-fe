@@ -98,7 +98,6 @@ export class ProductDisplayList {
         console.log('Unable to add OrderLineItem', error);
 
         this.state.set({ errorMessage: 'Unable to add OrderLineItem' });
-        
       },
     });
   }

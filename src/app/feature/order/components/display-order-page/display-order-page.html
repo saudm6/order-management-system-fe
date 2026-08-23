@@ -30,6 +30,7 @@
               <th>Discount</th>
               <th>Grand Total</th>
               <th>Created</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -64,10 +65,45 @@
                 <td>
                   {{ order.createdAt }}
                 </td>
+
+                <td class="actions-cell">
+                @if (
+                  order.status === 'Pending' ||
+                  order.status === 'Confirmed' ||
+                  order.status === 'Shipped'
+                ) {
+                  <button
+                    type="button"
+                    [disabled]="isSubmitting()"
+                    (click)="statusChange.emit({
+                      orderId: order.id,
+                      orderStatus: 'Confirm'
+                    })"
+                  >
+                    Confirm
+                  </button>
+                }
+
+                @if (
+                  order.status === 'Pending' ||
+                  order.status === 'Confirmed'
+                ) {
+                  <button
+                    type="button"
+                    [disabled]="isSubmitting()"
+                    (click)="statusChange.emit({
+                      orderId: order.id,
+                      orderStatus: 'Cancel'
+                    })"
+                  >
+                    Cancel
+                  </button>
+                }
+              </td>
               </tr>
             } @empty {
               <tr>
-                <td colspan="6" class="empty-cell">
+                <td colspan="7" class="empty-cell">
                   No orders found.
                 </td>
               </tr>

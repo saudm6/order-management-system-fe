@@ -1,6 +1,8 @@
 @if (vm$ | async; as vm) {
   <app-display-order-page
     [orderDisplay]="vm.orderListResponse"
+    [isSubmitting]="vm.isSubmitting"
     [errorMessage]="vm.errorMessage"
+    (statusChange)="updateOrderStatus($event)"
   />
 }

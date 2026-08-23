@@ -1,6 +1,6 @@
 export interface OrderLineItemResponse {
     id: string,
-    orderId: string,
+    orderId: string | null,
     productId: string,
     PlacedByUser: string,
     unitPrice: number,

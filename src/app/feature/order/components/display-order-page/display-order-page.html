@@ -73,6 +73,7 @@
                   order.status === 'Shipped'
                 ) {
                   <button
+                    class="confirm-button"
                     type="button"
                     [disabled]="isSubmitting()"
                     (click)="statusChange.emit({
@@ -89,6 +90,7 @@
                   order.status === 'Confirmed'
                 ) {
                   <button
+                    class="cancel-button"
                     type="button"
                     [disabled]="isSubmitting()"
                     (click)="statusChange.emit({

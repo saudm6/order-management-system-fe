@@ -1,7 +1,7 @@
 import { Component, computed, inject, OnInit, } from '@angular/core';
 import { OrderStatusRequest, OrderResponse } from '../../models';
 import { rxState, RxState } from '@rx-angular/state';
-import { finalize, Observable } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 import { OrderService } from '../../service/order.service';
 import { Router } from '@angular/router';
 import { DisplayOrderPage } from '../../components/display-order-page/display-order-page';
@@ -51,6 +51,11 @@ export class DisplayOrderList {
     this.orderService.updateOrderStatus(order).pipe(
       finalize(() => {
         this.state.set({ isSubmitting: false });
+      }),
+      tap(() => {
+        this.orderService.getOrder().subscribe();
+        // this.state.set({ orderListResponse: this.orderService.getOrder() })
+
       }),
     )
     .subscribe({

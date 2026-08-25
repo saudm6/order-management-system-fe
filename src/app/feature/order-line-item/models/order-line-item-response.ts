@@ -1,7 +1,7 @@
 export interface OrderLineItemResponse {
     id: string,
-    orderId: string | null,
-    productId: string,
+    productName: string;
+    orderNumber: number | null; 
     PlacedByUser: string,
     unitPrice: number,
     quantity: number,

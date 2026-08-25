@@ -113,6 +113,35 @@
               </span>
               }
             </label>
+
+            <label class="form-field form-field-wide">
+            <span class="field-label">Confirm password</span>
+
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Confirm password"
+              autocomplete="new-password"
+            />
+
+            @if (
+              userForm().get('confirmPassword')?.touched &&
+              userForm().get('confirmPassword')?.hasError('required')
+            ) {
+              <span class="field-error">
+                Please confirm your password.
+              </span>
+            }
+
+            @if (
+              userForm().get('confirmPassword')?.touched &&
+              userForm().hasError('passwordMismatch')
+            ) {
+              <span class="field-error">
+                Passwords do not match.
+              </span>
+            }
+          </label>
           </div>
         </div>
 

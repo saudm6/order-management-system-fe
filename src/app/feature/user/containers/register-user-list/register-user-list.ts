@@ -7,6 +7,7 @@ import { rxState, RxState } from '@rx-angular/state';
 import { finalize, Observable } from 'rxjs';
 import { contains } from '../../../../shared/functions/index';
 import { AsyncPipe } from '@angular/common';
+import { passwordsMatch } from '../../../../shared/validators/password-match.validators';
 
 interface RegisterUserState {
   isSubmitting: boolean;
@@ -23,7 +24,6 @@ type ViewModel = RegisterUserState;
   styleUrl: './register-user-list.css',
 })
 export class RegisterUserList {
-
   private readonly state = rxState<RegisterUserState>();
 
   vm$: Observable<ViewModel>;
@@ -45,7 +45,13 @@ export class RegisterUserList {
         contains(/[0-9]/, 'number'),
       ],
     ],
-  });
+    confirmPassword: ['', Validators.required],
+  },
+  {
+    validators: passwordsMatch,
+  }
+);
+
 
   constructor() {
     this.state.set({ 
@@ -70,8 +76,9 @@ export class RegisterUserList {
       errorMessage: '',
     });
 
+    const formValue = this.userForm.getRawValue();
     this.authService
-      .registerUser(this.userForm.getRawValue())
+      .registerUser({ fullName: formValue.fullName, email: formValue.email, password: formValue.password })
       .pipe(
         finalize(() => {
           this.state.set({ isSubmitting: false });
